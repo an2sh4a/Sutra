@@ -1,42 +1,40 @@
 .navbar{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 
-  padding: 18px 40px;
+  padding:18px 40px;
 
-  background-color: #EFE6DD;
+  background:#EFE6DD;
 }
 
 .logo{
-  font-size: 32px;
-  font-weight: bold;
-  color: #8B5E3C;
+  font-size:32px;
+  font-weight:bold;
+  color:#8B5E3C;
 }
 
 .search-bar{
-  width: 40%;
-  padding: 12px;
+  width:40%;
+  padding:12px;
 
-  border: none;
-  border-radius: 8px;
-
-  outline: none;
+  border:none;
+  border-radius:8px;
 }
 
 .nav-icons{
-  display: flex;
-  gap: 12px;
+  display:flex;
+  gap:12px;
 }
 
 .nav-icons button{
-  padding: 10px 16px;
+  padding:10px 16px;
 
-  border: none;
-  border-radius: 8px;
+  border:none;
+  border-radius:8px;
 
-  background-color: #D4A373;
-  color: white;
+  background:#D4A373;
+  color:white;
 
-  cursor: pointer;
+  cursor:pointer;
 }

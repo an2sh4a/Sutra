@@ -5,6 +5,9 @@ import Navbar from '../components/Navbar'
 import Hero from '../components/Hero'
 import ProductGrid from '../components/ProductGrid'
 import Footer from '../components/Footer'
+import CategoryBar from '../components/CategoryBar'
+import CustomerWords from '../components/CustomerWords'
+
 
 function Home() {
 
@@ -34,9 +37,13 @@ function Home() {
 
     <Navbar />
 
+    <CategoryBar />
+
     <Hero />
 
     <ProductGrid products={products} />
+
+    <CustomerWords />
 
     <Footer />
 

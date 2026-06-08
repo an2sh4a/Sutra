@@ -4,6 +4,11 @@ import ProductCard from './ProductCard'
 function ProductGrid({ products }) {
 
   return (
+    <section>
+
+    <h2 className="section-title">
+        Featured Products
+    </h2>
 
     <div className="product-grid">
 
@@ -17,6 +22,7 @@ function ProductGrid({ products }) {
       ))}
 
     </div>
+    </section>
 
   )
 

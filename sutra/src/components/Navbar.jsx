@@ -1,29 +1,26 @@
 import './Navbar.css'
+
 function Navbar() {
-
   return (
+    <nav className="navbar">
 
-    <nav>
-
-      <h2>Sutra</h2>
+      <div className="logo">
+        Sutra
+      </div>
 
       <input
         type="text"
         placeholder="Search jewellery..."
+        className="search-bar"
       />
 
-      <div>
-
+      <div className="nav-icons">
         <button>♡</button>
-
         <button>🛒</button>
-
         <button>Login</button>
-
       </div>
 
     </nav>
-
   )
 }
 
