@@ -5,7 +5,7 @@ function Navbar() {
     <nav className="navbar">
 
       <div className="logo">
-        Sutra
+        Sutrā
       </div>
 
       <input

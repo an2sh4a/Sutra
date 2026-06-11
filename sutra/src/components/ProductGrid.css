@@ -1,11 +1,21 @@
-.product-grid{
+.section-title{
+  text-align:center;
 
-  display: grid;
+  margin-top:60px;
+  margin-bottom:40px;
+
+  font-size:40px;
+
+  color:#8B5E3C;
+}
+
+.product-grid{
+  display:grid;
 
   grid-template-columns:
   repeat(3, 1fr);
 
-  gap: 30px;
+  gap:30px;
 
-  padding: 40px;
+  padding:0 40px 40px;
 }

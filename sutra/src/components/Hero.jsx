@@ -1,8 +1,7 @@
 import './Hero.css'
+
 function Hero() {
-
   return (
-
     <section className="hero">
 
       <div className="hero-content">
@@ -22,7 +21,6 @@ function Hero() {
       </div>
 
     </section>
-
   )
 }
 

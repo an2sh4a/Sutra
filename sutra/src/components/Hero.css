@@ -1,39 +1,45 @@
 .hero{
-  height: 70vh;
+  margin:40px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background:#DCC7B7;
 
-  background-color: #DCC5B2;
+  border-radius:30px;
 
-  margin: 30px;
-  border-radius: 20px;
+  height:550px;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
 
 .hero-content{
-  text-align: center;
+  text-align:center;
 }
 
 .hero-content h1{
-  font-size: 52px;
-  color: #8B5E3C;
-  margin-bottom: 20px;
+  font-size:72px;
+  color:#9B673F;
+
+  margin-bottom:20px;
 }
 
 .hero-content p{
-  font-size: 20px;
-  margin-bottom: 20px;
+  font-size:22px;
+
+  margin-bottom:30px;
 }
 
 .hero-content button{
-  padding: 14px 28px;
+  background:#9B673F;
+  color:white;
 
-  border: none;
-  border-radius: 10px;
+  border:none;
 
-  background-color: #8B5E3C;
-  color: white;
+  padding:18px 40px;
 
-  cursor: pointer;
+  border-radius:14px;
+
+  font-size:20px;
+
+  cursor:pointer;
 }

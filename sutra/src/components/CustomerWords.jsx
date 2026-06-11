@@ -1,11 +1,30 @@
+import './CustomerWords.css'
+
 function CustomerWords() {
   return (
-    <section>
-      <h2>What Our Customers Say</h2>
 
-      <p>
-        Beautiful handmade jewellery with premium quality.
-      </p>
+    <section className="customer-words">
+
+      <h2>
+        What Our Customers Say
+      </h2>
+
+      <div className="review-box">
+
+        <p>
+          "Beautiful handmade jewellery. Quality exceeded expectations."
+        </p>
+
+      </div>
+
+      <div className="review-box">
+
+        <p>
+          "Perfect gift. Packaging and finishing were excellent."
+        </p>
+
+      </div>
+
     </section>
   )
 }
