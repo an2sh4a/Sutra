@@ -36,3 +36,11 @@
   color: #8B5E3C;
   font-weight: bold;
 }
+
+.product-link{
+
+  text-decoration:none;
+
+  color:inherit;
+
+}
