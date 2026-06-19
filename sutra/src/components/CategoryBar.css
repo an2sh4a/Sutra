@@ -1,23 +1,31 @@
 .category-bar{
+
   display:flex;
 
   justify-content:center;
 
-  gap:60px;
+  gap:50px;
 
-  padding:20px;
+  padding:18px;
 
   background:#EFE6DD;
 
-  font-size:18px;
 }
+
 
 .category-bar span{
+
   cursor:pointer;
 
+  font-size:18px;
+
   transition:0.3s;
+
 }
 
+
 .category-bar span:hover{
-  color:#9B673F;
+
+  color:#8B5E3C;
+
 }

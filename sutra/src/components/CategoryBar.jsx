@@ -1,17 +1,65 @@
 import './CategoryBar.css'
 
-function CategoryBar() {
-  return (
+function CategoryBar({
+
+  selectedCategory,
+
+  setSelectedCategory
+
+}){
+
+  return(
+
     <div className="category-bar">
-      <span>Chains</span>
-      <span>Earrings</span>
-      <span>Hair Clips</span>
-      <span>Bracelets</span>
-      <span>Sets</span>
-      <span>Necklaces</span>
-      <span>All</span>
+
+      <span
+
+        onClick={() =>
+          setSelectedCategory('all')
+        }
+
+      >
+        All
+      </span>
+
+
+      <span
+
+        onClick={() =>
+          setSelectedCategory('earrings')
+        }
+
+      >
+        Earrings
+      </span>
+
+
+      <span
+
+        onClick={() =>
+          setSelectedCategory('bracelet')
+        }
+
+      >
+        Bracelets
+      </span>
+
+
+      <span
+
+        onClick={() =>
+          setSelectedCategory('necklace')
+        }
+
+      >
+        Necklaces
+      </span>
+
+
     </div>
+
   )
+
 }
 
 export default CategoryBar
