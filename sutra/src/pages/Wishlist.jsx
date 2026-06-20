@@ -1,57 +1,70 @@
 import { useContext } from 'react'
+import { WishlistContext } from '../context/WishlistContext'
+import './Wishlist.css'
 
-import { WishlistContext }
+function Wishlist() {
 
-from '../context/WishlistContext'
+  const { wishlist, removeWishlist } = useContext(WishlistContext)
 
-function Wishlist(){
+  return (
 
-const {
+    <div className="wishlist-container">
 
-wishlist
+      <h1>My Wishlist</h1>
 
-}
+      {
 
-= useContext(WishlistContext)
+        wishlist.length === 0 ?
 
-return(
+        <p>Your wishlist is empty.</p>
 
-<div style={{padding:"50px"}}>
+        :
 
-<h1>
+        wishlist.map((item) => (
 
-My Wishlist
+          <div className="wishlist-card" key={item.id}>
 
-</h1>
+            <img
+              src={item.image}
+              alt={item.name}
+            />
 
+            <div className="wishlist-info">
 
-{
+              <h2>{item.name}</h2>
 
-wishlist.map(item=>(
+              <p>{item.description}</p>
 
-<div key={item.id}>
+              <div className="price-box">
 
-<h2>
+                <span className="old-price">
+                  ₹{item.price + 100}
+                </span>
 
-{item.name}
+                <span className="new-price">
+                  ₹{item.price}
+                </span>
 
-</h2>
+              </div>
 
-<p>
+              <button
+                className="remove-btn"
+                onClick={() => removeWishlist(item.id)}
+              >
+                Remove
+              </button>
 
-₹{item.price}
+            </div>
 
-</p>
+          </div>
 
-</div>
+        ))
 
-))
+      }
 
-}
+    </div>
 
-</div>
-
-)
+  )
 
 }
 

@@ -5,11 +5,22 @@ import { WishlistContext } from '../context/WishlistContext'
 
 function ProductCard({ product }) {
 
-  const { addToWishlist } = useContext(WishlistContext)
+  const {
+
+    toggleWishlist,
+
+    isWishlisted
+
+  } = useContext(WishlistContext)
+
+  const liked = isWishlisted(product.id)
 
   return (
 
-    <Link to={`/product/${product.id}`} className="product-link">
+    <Link
+      to={`/product/${product.id}`}
+      className="product-link"
+    >
 
       <div className="product-card">
 
@@ -21,13 +32,21 @@ function ProductCard({ product }) {
           />
 
           <button
-            className="wishlist-btn"
-            onClick={(e) => {
+
+            className={`wishlist-btn ${liked ? 'active' : ''}`}
+
+            onClick={(e)=>{
+
               e.preventDefault()
-              addToWishlist(product)
+
+              toggleWishlist(product)
+
             }}
+
           >
-            ♡
+
+            ♥
+
           </button>
 
         </div>
@@ -37,17 +56,23 @@ function ProductCard({ product }) {
         <div className="price-box">
 
           <span className="old-price">
+
             ₹{product.price + 100}
+
           </span>
 
           <span className="new-price">
+
             ₹{product.price}
+
           </span>
 
         </div>
 
         <div className="rating">
+
           ★★★★★
+
         </div>
 
       </div>

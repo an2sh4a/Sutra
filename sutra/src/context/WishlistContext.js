@@ -6,13 +6,27 @@ export function WishlistProvider({ children }) {
 
   const [wishlist, setWishlist] = useState([])
 
-  function addToWishlist(product){
+  function toggleWishlist(product) {
 
     const exists = wishlist.find(
       item => item.id === product.id
     )
 
-    if(!exists){
+    if(exists){
+
+      setWishlist(
+
+        wishlist.filter(
+
+          item => item.id !== product.id
+
+        )
+
+      )
+
+    }
+
+    else{
 
       setWishlist([
 
@@ -26,21 +40,17 @@ export function WishlistProvider({ children }) {
 
   }
 
-  function removeWishlist(id){
+  function isWishlisted(id){
 
-    setWishlist(
+    return wishlist.some(
 
-      wishlist.filter(
-
-        item => item.id !== id
-
-      )
+      item => item.id === id
 
     )
 
   }
 
-  return(
+  return (
 
     <WishlistContext.Provider
 
@@ -48,9 +58,9 @@ export function WishlistProvider({ children }) {
 
         wishlist,
 
-        addToWishlist,
+        toggleWishlist,
 
-        removeWishlist
+        isWishlisted
 
       }}
 
