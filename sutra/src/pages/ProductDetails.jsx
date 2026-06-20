@@ -7,69 +7,96 @@ import './ProductDetails.css'
 function ProductDetails() {
 
   const { id } = useParams()
-
   const { addToCart } = useContext(CartContext)
 
   const [product, setProduct] = useState(null)
 
   useEffect(() => {
-
     fetchProduct()
-
   }, [])
 
   async function fetchProduct() {
 
     const { data, error } = await supabase
-
       .from('products')
-
       .select('*')
-
       .eq('id', id)
-
       .single()
 
     if(data){
-
       setProduct(data)
-
-    }else{
-
+    }
+    else{
       console.log(error)
-
     }
 
   }
 
   if(!product){
-
     return <h2>Loading...</h2>
-
   }
 
   return (
 
     <div className="details-container">
 
-      <img
-        src={product.image}
-        alt={product.name}
-      />
+      <div className="details-image">
+
+        <img
+          src={product.image}
+          alt={product.name}
+        />
+
+      </div>
 
       <div className="details-info">
 
-        <h1>{product.name}</h1>
+        <p className="category">
+          {product.category}
+        </p>
 
-        <h2>₹{product.price}</h2>
+        <h1>
+          {product.name}
+        </h1>
 
-        <p>{product.description}</p>
+        <p className="rating">
+          ⭐ {product.rating}
+        </p>
 
-        <button onClick={() => addToCart(product)}>
+        <p className="material">
+          Material : {product.material}
+        </p>
 
-          Add To Cart
+        <div className="price-box">
 
-        </button>
+          <span className="old-price">
+            ₹599
+          </span>
+
+          <span className="new-price">
+            ₹{product.price}
+          </span>
+
+        </div>
+
+        <p className="description">
+          {product.description}
+        </p>
+
+        <div className="buttons">
+
+          <button
+            className="cart-btn"
+            onClick={() => addToCart(product)}
+          >
+            Add To Cart
+          </button>
+
+          <button className="buy-btn">
+            Buy Now
+          </button>
+
+        </div>
 
       </div>
 
