@@ -9,14 +9,42 @@ function ProductCard({ product }) {
 
       <div className="product-card">
 
-        <img
-          src={product.image}
-          alt={product.name}
-        />
+        <div className="image-container">
 
-        <h2>{product.name}</h2>
+          <img
+            src={product.image}
+            alt={product.name}
+          />
 
-        <p>₹{product.price}</p>
+          <button className="wishlist-btn">
+            ♡
+          </button>
+
+        </div>
+
+        <h3>{product.name}</h3>
+
+        <div className="price-box">
+
+          <span className="old-price">
+
+            ₹{product.price + 100}
+
+          </span>
+
+          <span className="new-price">
+
+            ₹{product.price}
+
+          </span>
+
+        </div>
+
+        <div className="rating">
+
+          ★★★★★
+
+        </div>
 
       </div>
 
