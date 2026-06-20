@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-
 import { supabase } from '../services/supabaseClient'
 
 import Navbar from '../components/Navbar'
@@ -12,60 +11,41 @@ import CustomerWords from '../components/CustomerWords'
 function Home() {
 
   const [products, setProducts] = useState([])
-
-  const [selectedCategory, setSelectedCategory] =
-  useState('all')
-
-
+  const [filteredProducts, setFilteredProducts] = useState([])
 
   useEffect(() => {
-
     fetchProducts()
-
-  }, [selectedCategory])
-
-
+  }, [])
 
   async function fetchProducts() {
 
-    let query = supabase
-
+    const { data, error } = await supabase
       .from('products')
-
       .select('*')
 
-
-
-    if(selectedCategory !== 'all'){
-
-      query = query.eq(
-        'category',
-        selectedCategory
-      )
-
+    if(data){
+      setProducts(data)
+      setFilteredProducts(data)
     }
-
-
-
-    const { data, error } = await query
-
-
 
     if(error){
-
       console.log(error)
-
     }
-
-    else{
-
-      setProducts(data)
-
-    }
-
   }
 
+  function filterCategory(category){
 
+    if(category === 'All'){
+      setFilteredProducts(products)
+      return
+    }
+
+    const filtered = products.filter(
+      (item) => item.category === category
+    )
+
+    setFilteredProducts(filtered)
+  }
 
   return (
 
@@ -73,19 +53,11 @@ function Home() {
 
       <Navbar />
 
-      <CategoryBar
-
-        selectedCategory={selectedCategory}
-
-        setSelectedCategory={
-          setSelectedCategory
-        }
-
-      />
+      <CategoryBar filterCategory={filterCategory} />
 
       <Hero />
 
-      <ProductGrid products={products} />
+      <ProductGrid products={filteredProducts} />
 
       <CustomerWords />
 

@@ -1,60 +1,38 @@
 import './CategoryBar.css'
 
-function CategoryBar({
+function CategoryBar({ filterCategory }) {
 
-  selectedCategory,
-
-  setSelectedCategory
-
-}){
-
-  return(
+  return (
 
     <div className="category-bar">
 
-      <span
-
-        onClick={() =>
-          setSelectedCategory('all')
-        }
-
-      >
-        All
+      <span onClick={() => filterCategory("Chains")}>
+        Chains
       </span>
 
-
-      <span
-
-        onClick={() =>
-          setSelectedCategory('earrings')
-        }
-
-      >
+      <span onClick={() => filterCategory("Earrings")}>
         Earrings
       </span>
 
+      <span onClick={() => filterCategory("Hair Clips")}>
+        Hair Clips
+      </span>
 
-      <span
-
-        onClick={() =>
-          setSelectedCategory('bracelet')
-        }
-
-      >
+      <span onClick={() => filterCategory("Bracelets")}>
         Bracelets
       </span>
 
+      <span onClick={() => filterCategory("Sets")}>
+        Sets
+      </span>
 
-      <span
-
-        onClick={() =>
-          setSelectedCategory('necklace')
-        }
-
-      >
+      <span onClick={() => filterCategory("Necklaces")}>
         Necklaces
       </span>
 
+      <span onClick={() => filterCategory("All")}>
+        All
+      </span>
 
     </div>
 
