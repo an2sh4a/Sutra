@@ -1,78 +1,191 @@
 import { useContext } from 'react'
+
 import { CartContext } from '../context/CartContext'
+
 import './Cart.css'
 
-function Cart() {
+function Cart(){
 
-  const { cart } = useContext(CartContext)
+const {
 
-  const total = cart.reduce(
-    (sum, item) => sum + Number(item.price),
-    0
-  )
+cart,
 
-  return (
+increaseQuantity,
 
-    <div className="cart-container">
+decreaseQuantity,
 
-      <h1>My Cart</h1>
+removeItem
 
-      {
+}
 
-        cart.length === 0 ?
+= useContext(CartContext)
 
-        <p>Your cart is empty.</p>
 
-        :
+const total = cart.reduce(
 
-        <>
+(sum,item)=>
 
-          {
+sum+(item.price*item.quantity),
 
-            cart.map((item)=>(
+0
 
-              <div className="cart-card" key={item.id}>
+)
 
-                <img
-                  src={item.image}
-                  alt={item.name}
-                />
 
-                <div className="cart-info">
+return(
 
-                  <h2>{item.name}</h2>
+<div className="cart-container">
 
-                  <p>{item.description}</p>
+<h1>
 
-                  <h3>₹{item.price}</h3>
+My Cart
 
-                </div>
+</h1>
 
-              </div>
 
-            ))
+{
 
-          }
+cart.length===0
 
-          <div className="summary">
+?
 
-            <h2>Total : ₹{total}</h2>
+<p>
 
-            <button>
+Your cart is empty
 
-              Proceed To Checkout
+</p>
 
-            </button>
+:
 
-          </div>
+<>
 
-        </>
+{
 
-      }
+cart.map(item=>(
 
-    </div>
+<div
 
-  )
+className="cart-card"
+
+key={item.id}
+
+>
+
+<img
+
+src={item.image}
+
+alt={item.name}
+
+/>
+
+
+<div className="cart-info">
+
+<h2>
+
+{item.name}
+
+</h2>
+
+<h3>
+
+₹{item.price}
+
+</h3>
+
+
+<div className="quantity-box">
+
+<button
+
+onClick={()=>
+
+decreaseQuantity(item.id)
+
+}
+
+>
+
+-
+
+</button>
+
+
+<span>
+
+{item.quantity}
+
+</span>
+
+
+<button
+
+onClick={()=>
+
+increaseQuantity(item.id)
+
+}
+
+>
+
++
+
+</button>
+
+</div>
+
+
+<button
+
+className="remove-btn"
+
+onClick={()=>
+
+removeItem(item.id)
+
+}
+
+>
+
+Remove
+
+</button>
+
+
+</div>
+
+</div>
+
+))
+
+}
+
+
+<div className="summary">
+
+<h2>
+
+Total : ₹{total}
+
+</h2>
+
+
+<button>
+
+Proceed To Checkout
+
+</button>
+
+</div>
+
+</>
+
+}
+
+</div>
+
+)
 
 }
 

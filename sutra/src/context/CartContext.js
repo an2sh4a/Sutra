@@ -6,17 +6,145 @@ export function CartProvider({ children }) {
 
   const [cart, setCart] = useState([])
 
-  function addToCart(product){
+  function addToCart(product) {
 
-    setCart(prev => [...prev, product])
+    const existing = cart.find(
+      item => item.id === product.id
+    )
 
-    console.log("Added :", product)
+    if(existing){
+
+      setCart(
+
+        cart.map(item =>
+
+          item.id === product.id
+
+          ?
+
+          {...item, quantity:item.quantity+1}
+
+          :
+
+          item
+
+        )
+
+      )
+
+    }
+
+    else{
+
+      setCart([
+
+        ...cart,
+
+        {
+
+          ...product,
+
+          quantity:1
+
+        }
+
+      ])
+
+    }
 
   }
 
-  return (
+  function increaseQuantity(id){
 
-    <CartContext.Provider value={{ cart, addToCart }}>
+    setCart(
+
+      cart.map(item =>
+
+        item.id===id
+
+        ?
+
+        {
+
+          ...item,
+
+          quantity:item.quantity+1
+
+        }
+
+        :
+
+        item
+
+      )
+
+    )
+
+  }
+
+  function decreaseQuantity(id){
+
+    setCart(
+
+      cart.map(item =>
+
+        item.id===id
+
+        ?
+
+        {
+
+          ...item,
+
+          quantity:item.quantity-1
+
+        }
+
+        :
+
+        item
+
+      )
+
+      .filter(item=>item.quantity>0)
+
+    )
+
+  }
+
+  function removeItem(id){
+
+    setCart(
+
+      cart.filter(
+
+        item=>item.id!==id
+
+      )
+
+    )
+
+  }
+
+  return(
+
+    <CartContext.Provider
+
+      value={{
+
+        cart,
+
+        addToCart,
+
+        increaseQuantity,
+
+        decreaseQuantity,
+
+        removeItem
+
+      }}
+
+    >
 
       {children}
 
