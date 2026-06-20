@@ -1,7 +1,10 @@
 import './Navbar.css'
+import { Link } from 'react-router-dom'
 
 function Navbar() {
+
   return (
+
     <nav className="navbar">
 
       <div className="logo">
@@ -15,13 +18,21 @@ function Navbar() {
       />
 
       <div className="nav-icons">
+
         <button>♡</button>
-        <button>🛒</button>
+
+        <Link to="/cart" className="cart-btn">
+          🛒
+        </Link>
+
         <button>Login</button>
+
       </div>
 
     </nav>
+
   )
+
 }
 
 export default Navbar

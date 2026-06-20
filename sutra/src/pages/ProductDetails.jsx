@@ -1,25 +1,22 @@
-import { useEffect, useState } from 'react'
-
+import { useEffect, useState, useContext } from 'react'
 import { useParams } from 'react-router-dom'
-
 import { supabase } from '../services/supabaseClient'
-
+import { CartContext } from '../context/CartContext'
 import './ProductDetails.css'
-
 
 function ProductDetails() {
 
   const { id } = useParams()
 
-  const [product, setProduct] = useState(null)
+  const { addToCart } = useContext(CartContext)
 
+  const [product, setProduct] = useState(null)
 
   useEffect(() => {
 
     fetchProduct()
 
   }, [])
-
 
   async function fetchProduct() {
 
@@ -33,14 +30,11 @@ function ProductDetails() {
 
       .single()
 
-
     if(data){
 
       setProduct(data)
 
-    }
-
-    else{
+    }else{
 
       console.log(error)
 
@@ -48,56 +42,34 @@ function ProductDetails() {
 
   }
 
-
   if(!product){
 
     return <h2>Loading...</h2>
 
   }
 
-
   return (
 
     <div className="details-container">
 
       <img
-
         src={product.image}
-
         alt={product.name}
-
       />
-
 
       <div className="details-info">
 
-        <h1>
+        <h1>{product.name}</h1>
 
-          {product.name}
+        <h2>₹{product.price}</h2>
 
-        </h1>
+        <p>{product.description}</p>
 
-
-        <h2>
-
-          ₹{product.price}
-
-        </h2>
-
-
-        <p>
-
-          {product.description}
-
-        </p>
-
-
-        <button>
+        <button onClick={() => addToCart(product)}>
 
           Add To Cart
 
         </button>
-
 
       </div>
 
