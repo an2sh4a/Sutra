@@ -1,7 +1,7 @@
 import './Navbar.css'
 import { Link } from 'react-router-dom'
 
-function Navbar() {
+function Navbar({ search, setSearch }) {
 
   return (
 
@@ -15,13 +15,15 @@ function Navbar() {
         type="text"
         placeholder="Search jewellery..."
         className="search-bar"
+        value={search}
+        onChange={(e)=>setSearch(e.target.value)}
       />
 
       <div className="nav-icons">
 
         <button>♡</button>
 
-        <Link to="/cart" className="cart-btn">
+        <Link to="/cart" className="cart-link">
           🛒
         </Link>
 

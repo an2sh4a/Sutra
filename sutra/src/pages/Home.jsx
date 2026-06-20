@@ -10,54 +10,89 @@ import CustomerWords from '../components/CustomerWords'
 
 function Home() {
 
-  const [products, setProducts] = useState([])
-  const [filteredProducts, setFilteredProducts] = useState([])
+  const [products,setProducts]=useState([])
+  const [filteredProducts,setFilteredProducts]=useState([])
+  const [search,setSearch]=useState("")
 
-  useEffect(() => {
+  useEffect(()=>{
     fetchProducts()
-  }, [])
+  },[])
 
-  async function fetchProducts() {
+  useEffect(()=>{
 
-    const { data, error } = await supabase
-      .from('products')
-      .select('*')
+    const filtered=products.filter((item)=>
 
-    if(data){
-      setProducts(data)
-      setFilteredProducts(data)
-    }
+      item.name.toLowerCase()
+      .includes(search.toLowerCase())
 
-    if(error){
-      console.log(error)
-    }
-  }
-
-  function filterCategory(category){
-
-    if(category === 'All'){
-      setFilteredProducts(products)
-      return
-    }
-
-    const filtered = products.filter(
-      (item) => item.category === category
     )
 
     setFilteredProducts(filtered)
+
+  },[search,products])
+
+
+  async function fetchProducts(){
+
+    const {data,error}=await supabase
+    .from('products')
+    .select('*')
+
+    if(data){
+
+      setProducts(data)
+      setFilteredProducts(data)
+
+    }
+
+    if(error){
+
+      console.log(error)
+
+    }
+
   }
 
-  return (
+
+  function filterCategory(category){
+
+    if(category==="All"){
+
+      setFilteredProducts(products)
+      return
+
+    }
+
+    const filtered=products.filter(
+
+      (item)=>
+
+      item.category===category
+
+    )
+
+    setFilteredProducts(filtered)
+
+  }
+
+  return(
 
     <div>
 
-      <Navbar />
+      <Navbar
+        search={search}
+        setSearch={setSearch}
+      />
 
-      <CategoryBar filterCategory={filterCategory} />
+      <CategoryBar
+        filterCategory={filterCategory}
+      />
 
       <Hero />
 
-      <ProductGrid products={filteredProducts} />
+      <ProductGrid
+        products={filteredProducts}
+      />
 
       <CustomerWords />
 
