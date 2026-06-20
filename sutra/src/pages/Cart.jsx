@@ -1,191 +1,172 @@
 import { useContext } from 'react'
-
 import { CartContext } from '../context/CartContext'
-
 import './Cart.css'
 
-function Cart(){
+function Cart() {
 
-const {
+  const {
+    cart,
+    increaseQuantity,
+    decreaseQuantity,
+    removeItem
+  } = useContext(CartContext)
 
-cart,
+  const total = cart.reduce(
+    (sum, item) => sum + (item.price * item.quantity),
+    0
+  )
 
-increaseQuantity,
+  return (
 
-decreaseQuantity,
+    <div className="cart-container">
 
-removeItem
+      <h1>My Cart</h1>
 
-}
+      {
 
-= useContext(CartContext)
+        cart.length === 0 ?
 
+        <p className="empty-cart">
+          Your cart is empty
+        </p>
 
-const total = cart.reduce(
+        :
 
-(sum,item)=>
+        <>
 
-sum+(item.price*item.quantity),
+          {
 
-0
+            cart.map((item) => (
 
-)
+              <div className="cart-card" key={item.id}>
 
+                <img
+                  src={item.image}
+                  alt={item.name}
+                />
 
-return(
+                <div className="cart-info">
 
-<div className="cart-container">
+                  <h2>{item.name}</h2>
 
-<h1>
+                  <p className="description">
 
-My Cart
+                    {item.description}
 
-</h1>
+                  </p>
 
+                  <div className="price-box">
 
-{
+                    <span className="old-price">
 
-cart.length===0
+                      ₹{item.price + 100}
 
-?
+                    </span>
 
-<p>
+                    <span className="new-price">
 
-Your cart is empty
+                      ₹{item.price}
 
-</p>
+                    </span>
 
-:
+                  </div>
 
-<>
+                  <div className="quantity-box">
 
-{
+                    <button
+                      onClick={() =>
+                        decreaseQuantity(item.id)
+                      }
+                    >
+                      -
+                    </button>
 
-cart.map(item=>(
+                    <span>
 
-<div
+                      {item.quantity}
 
-className="cart-card"
+                    </span>
 
-key={item.id}
+                    <button
+                      onClick={() =>
+                        increaseQuantity(item.id)
+                      }
+                    >
+                      +
+                    </button>
 
->
+                  </div>
 
-<img
+                  <button
+                    className="remove-btn"
+                    onClick={() =>
+                      removeItem(item.id)
+                    }
+                  >
+                    Remove
+                  </button>
 
-src={item.image}
+                  <p className="delivery">
 
-alt={item.name}
+                    🚚 Free Delivery
 
-/>
+                  </p>
 
+                  <p className="delivery-date">
 
-<div className="cart-info">
+                    Delivery by 28 June
 
-<h2>
+                  </p>
 
-{item.name}
+                </div>
 
-</h2>
+              </div>
 
-<h3>
+            ))
 
-₹{item.price}
+          }
 
-</h3>
+          <div className="summary">
 
+            <div className="row">
 
-<div className="quantity-box">
+              <span>Subtotal</span>
 
-<button
+              <span>₹{total}</span>
 
-onClick={()=>
+            </div>
 
-decreaseQuantity(item.id)
+            <div className="row">
 
-}
+              <span>Shipping</span>
 
->
+              <span>Free</span>
 
--
+            </div>
 
-</button>
+            <div className="row total-row">
 
+              <span>Total</span>
 
-<span>
+              <span>₹{total}</span>
 
-{item.quantity}
+            </div>
 
-</span>
+            <button className="checkout-btn">
 
+              Proceed To Checkout
 
-<button
+            </button>
 
-onClick={()=>
+          </div>
 
-increaseQuantity(item.id)
+        </>
 
-}
+      }
 
->
+    </div>
 
-+
-
-</button>
-
-</div>
-
-
-<button
-
-className="remove-btn"
-
-onClick={()=>
-
-removeItem(item.id)
-
-}
-
->
-
-Remove
-
-</button>
-
-
-</div>
-
-</div>
-
-))
-
-}
-
-
-<div className="summary">
-
-<h2>
-
-Total : ₹{total}
-
-</h2>
-
-
-<button>
-
-Proceed To Checkout
-
-</button>
-
-</div>
-
-</>
-
-}
-
-</div>
-
-)
+  )
 
 }
 
