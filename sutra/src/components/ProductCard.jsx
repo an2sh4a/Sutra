@@ -1,7 +1,11 @@
 import './ProductCard.css'
 import { Link } from 'react-router-dom'
+import { useContext } from 'react'
+import { WishlistContext } from '../context/WishlistContext'
 
 function ProductCard({ product }) {
+
+  const { addToWishlist } = useContext(WishlistContext)
 
   return (
 
@@ -16,7 +20,13 @@ function ProductCard({ product }) {
             alt={product.name}
           />
 
-          <button className="wishlist-btn">
+          <button
+            className="wishlist-btn"
+            onClick={(e) => {
+              e.preventDefault()
+              addToWishlist(product)
+            }}
+          >
             ♡
           </button>
 
@@ -27,23 +37,17 @@ function ProductCard({ product }) {
         <div className="price-box">
 
           <span className="old-price">
-
             ₹{product.price + 100}
-
           </span>
 
           <span className="new-price">
-
             ₹{product.price}
-
           </span>
 
         </div>
 
         <div className="rating">
-
           ★★★★★
-
         </div>
 
       </div>

@@ -1,62 +1,55 @@
-import {
-BrowserRouter,
-Routes,
-Route
-}
-from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
-import { CartProvider }
-from './context/CartContext'
+import { CartProvider } from './context/CartContext'
+import { WishlistProvider } from './context/WishlistContext'
 
 import Home from './pages/Home'
-import ProductDetails
-from './pages/ProductDetails'
-
+import ProductDetails from './pages/ProductDetails'
 import Cart from './pages/Cart'
+import Wishlist from './pages/Wishlist'
 
 function App() {
 
   return (
-    <CartProvider>
 
-    <BrowserRouter>
+    <WishlistProvider>
 
-      <Routes>
+      <CartProvider>
 
-        <Route
+        <BrowserRouter>
 
-          path="/"
+          <Routes>
 
-          element={<Home />}
+            <Route
+              path="/"
+              element={<Home />}
+            />
 
-        />
+            <Route
+              path="/product/:id"
+              element={<ProductDetails />}
+            />
 
+            <Route
+              path="/cart"
+              element={<Cart />}
+            />
 
-        <Route
+            <Route
+              path="/wishlist"
+              element={<Wishlist />}
+            />
 
-          path="/product/:id"
+          </Routes>
 
-          element={<ProductDetails />}
+        </BrowserRouter>
 
-        />
+      </CartProvider>
 
-        <Route
-
-          path="/cart"
-
-          element={<Cart />}
-
-        />
-
-      </Routes>
-
-    </BrowserRouter>
-
-    </CartProvider>
+    </WishlistProvider>
 
   )
 
 }
-
 
 export default App
