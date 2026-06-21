@@ -1,0 +1,57 @@
+.admin-container{
+  max-width:1200px;
+  margin:auto;
+  padding:50px;
+}
+
+.admin-container h1{
+  color:#8B5E3C;
+  margin-bottom:35px;
+}
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:25px;
+  margin-bottom:50px;
+}
+
+.card{
+  background:white;
+  padding:30px;
+  border-radius:20px;
+  box-shadow:0 8px 25px rgba(0,0,0,0.08);
+}
+
+.card h3{
+  color:#666;
+}
+
+.card p{
+  font-size:36px;
+  color:#8B5E3C;
+  font-weight:bold;
+}
+
+.order-card{
+  background:white;
+  padding:25px;
+  border-radius:18px;
+  margin-bottom:20px;
+
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  box-shadow:0 5px 20px rgba(0,0,0,0.08);
+}
+
+.Pending{
+  color:#E67E22;
+  font-weight:bold;
+}
+
+.Delivered{
+  color:#27AE60;
+  font-weight:bold;
+}

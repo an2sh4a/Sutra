@@ -9,6 +9,7 @@ import Cart from './pages/Cart'
 import Wishlist from './pages/Wishlist'
 import Checkout from './pages/Checkout'
 import OrderSuccess from './pages/OrderSuccess'
+import AdminDashboard from './pages/AdminDashboard'
 
 function App() {
 
@@ -50,6 +51,11 @@ function App() {
             <Route
             path="/success"
             element={<OrderSuccess />}
+            />
+
+            <Route
+            path="/admin"
+            element={<AdminDashboard />}
             />
 
           </Routes>
