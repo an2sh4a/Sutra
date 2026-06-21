@@ -100,3 +100,15 @@
 
   color:#8B5E3C;
 }
+
+.error{
+  color:#D32F2F;
+  font-size:14px;
+  margin-top:-12px;
+  margin-bottom:15px;
+}
+
+input:disabled{
+  background:#F5F5F5;
+  color:#666;
+}
