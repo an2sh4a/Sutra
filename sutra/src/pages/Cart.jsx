@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { CartContext } from '../context/CartContext'
-import './Cart.css'
 import { Link } from 'react-router-dom'
+import './Cart.css'
 
 function Cart() {
 
@@ -17,29 +17,51 @@ function Cart() {
     0
   )
 
+  const originalTotal = cart.reduce(
+    (sum, item) => sum + (item.original_price * item.quantity),
+    0
+  )
+
+  const totalItems = cart.reduce(
+    (sum, item) => sum + item.quantity,
+    0
+  )
+
+  const saved = originalTotal - total
+
   return (
 
-    <div className="cart-container">
+    <div className="cart-layout">
 
-      <h1>My Cart</h1>
+      <div className="cart-left">
 
-      {
+        <h1>My Cart</h1>
 
-        cart.length === 0 ?
+        {
 
-        <p className="empty-cart">
+          cart.length === 0 ?
 
-          Your cart is empty
+          <p className="empty-cart">
 
-        </p>
+            Your cart is empty
 
-        :
+          </p>
 
-        <>
+          :
 
-          {
+          cart.map((item) => {
 
-            cart.map((item) => (
+            const discount = Math.round(
+
+              ((item.original_price - item.price)
+
+              / item.original_price)
+
+              * 100
+
+            )
+
+            return (
 
               <div className="cart-card" key={item.id}>
 
@@ -62,7 +84,7 @@ function Cart() {
 
                     <span className="old-price">
 
-                      ₹{item.price + 100}
+                      ₹{item.original_price}
 
                     </span>
 
@@ -74,7 +96,7 @@ function Cart() {
 
                     <span className="discount">
 
-                      22% OFF
+                      {discount}% OFF
 
                     </span>
 
@@ -88,12 +110,10 @@ function Cart() {
 
                   <div className="quantity-box">
 
-                    <button
-                      onClick={() =>
-                        decreaseQuantity(item.id)
-                      }
-                    >
+                    <button onClick={() => decreaseQuantity(item.id)}>
+
                       -
+
                     </button>
 
                     <span>
@@ -102,23 +122,21 @@ function Cart() {
 
                     </span>
 
-                    <button
-                      onClick={() =>
-                        increaseQuantity(item.id)
-                      }
-                    >
+                    <button onClick={() => increaseQuantity(item.id)}>
+
                       +
+
                     </button>
 
                   </div>
 
                   <button
                     className="remove-btn"
-                    onClick={() =>
-                      removeItem(item.id)
-                    }
+                    onClick={() => removeItem(item.id)}
                   >
+
                     Remove
+
                   </button>
 
                   <p className="delivery">
@@ -137,117 +155,152 @@ function Cart() {
 
               </div>
 
-            ))
+            )
 
-          }
+          })
+
+        }
+
+      </div>
+
+
+      {
+
+        cart.length > 0 &&
+
+        <div className="cart-right">
 
           <div className="summary">
 
-          <h2 className="summary-title">
+            <h2>
 
-          Order Summary
+              Order Summary
 
-          </h2>
+            </h2>
 
-          <div className="summary-row">
 
-          <span>
+            <div className="bill-row big-row">
 
-          Items (
+              <span>
 
-          {
+                Items ({totalItems})
 
-          cart.reduce(
+              </span>
 
-          (sum,item)=>sum+item.quantity,
+              <span>
 
-          0
+                ₹{originalTotal}
 
-          )
+              </span>
 
-          }
+            </div>
 
-          )
 
-          </span>
+            {
 
-          <span>
+              cart.map(item => (
 
-          ₹{total}
+                <div
+                  key={item.id}
+                  className="summary-item"
+                >
 
-          </span>
+                  <span>
+
+                    {item.name} × {item.quantity}
+
+                  </span>
+
+                  <span>
+
+                    ₹{item.original_price * item.quantity}
+
+                  </span>
+
+                </div>
+
+              ))
+
+            }
+
+
+            <hr />
+
+
+            <div className="bill-row">
+
+              <span>
+
+                Discount
+
+              </span>
+
+              <span className="saved">
+
+                - ₹{saved}
+
+              </span>
+
+            </div>
+
+
+            <div className="bill-row">
+
+              <span>
+
+                Shipping
+
+              </span>
+
+              <span className="free">
+
+                FREE
+
+              </span>
+
+            </div>
+
+
+            <hr />
+
+
+            <div className="grand-total">
+
+              <span>
+
+                Grand Total
+
+              </span>
+
+              <span>
+
+                ₹{total}
+
+              </span>
+
+            </div>
+
+
+            <p className="saved-message">
+
+              You Saved ₹{saved} 🎉
+
+            </p>
+
+
+            <Link to="/checkout">
+
+              <button className="checkout-btn">
+
+                Proceed To Checkout
+
+              </button>
+
+            </Link>
 
           </div>
 
-          <div className="summary-row">
-
-          <span>
-
-          Shipping
-
-          </span>
-
-          <span className="free">
-
-          FREE
-
-          </span>
-
-          </div>
-
-          <div className="summary-row">
-
-          <span>
-
-          Discount
-
-          </span>
-
-          <span className="saved">
-
-          - ₹{cart.length * 100}
-
-          </span>
-
-          </div>
-
-          <hr />
-
-          <div className="grand-total">
-
-          <span>
-
-          Grand Total
-
-          </span>
-
-          <span>
-
-          ₹{total}
-
-          </span>
-
-          </div>
-
-          <p className="saved-message">
-
-          You Saved ₹{cart.length * 100} 🎉
-
-          </p>
-
-          <Link to="/checkout">
-
-          <button className="checkout-btn">
-
-          Proceed To Checkout
-
-          </button>
-
-          </Link>
-
-          </div>
-
-        </>
+        </div>
 
       }
 
