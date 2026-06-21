@@ -1,19 +1,11 @@
 import './ProductCard.css'
 import { Link } from 'react-router-dom'
-import { useContext } from 'react'
-import { WishlistContext } from '../context/WishlistContext'
 
 function ProductCard({ product }) {
 
-  const {
-
-    toggleWishlist,
-
-    isWishlisted
-
-  } = useContext(WishlistContext)
-
-  const liked = isWishlisted(product.id)
+  const discount = Math.round(
+    ((product.original_price - product.price) / product.original_price) * 100
+  )
 
   return (
 
@@ -24,40 +16,18 @@ function ProductCard({ product }) {
 
       <div className="product-card">
 
-        <div className="image-container">
+        <img
+          src={product.image}
+          alt={product.name}
+        />
 
-          <img
-            src={product.image}
-            alt={product.name}
-          />
-
-          <button
-
-            className={`wishlist-btn ${liked ? 'active' : ''}`}
-
-            onClick={(e)=>{
-
-              e.preventDefault()
-
-              toggleWishlist(product)
-
-            }}
-
-          >
-
-            ♥
-
-          </button>
-
-        </div>
-
-        <h3>{product.name}</h3>
+        <h2>{product.name}</h2>
 
         <div className="price-box">
 
           <span className="old-price">
 
-            ₹{product.price + 100}
+            ₹{product.original_price}
 
           </span>
 
@@ -67,11 +37,11 @@ function ProductCard({ product }) {
 
           </span>
 
-        </div>
+          <span className="discount">
 
-        <div className="rating">
+            {discount}% OFF
 
-          ★★★★★
+          </span>
 
         </div>
 

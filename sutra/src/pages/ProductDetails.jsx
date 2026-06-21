@@ -24,17 +24,27 @@ function ProductDetails() {
       .single()
 
     if(data){
+
       setProduct(data)
-    }
-    else{
+
+    } else {
+
       console.log(error)
+
     }
 
   }
 
   if(!product){
+
     return <h2>Loading...</h2>
+
   }
+
+  const discount = Math.round(
+    ((product.original_price - product.price) /
+    product.original_price) * 100
+  )
 
   return (
 
@@ -49,39 +59,57 @@ function ProductDetails() {
 
       </div>
 
+
       <div className="details-info">
 
         <p className="category">
+
           {product.category}
+
         </p>
 
         <h1>
+
           {product.name}
+
         </h1>
 
-        <p className="rating">
-          ⭐ {product.rating}
+        <p className="material">
+
+          Material : {product.material}
+
         </p>
 
-        <p className="material">
-          Material : {product.material}
-        </p>
 
         <div className="price-box">
 
           <span className="old-price">
-            ₹599
+
+            ₹{product.original_price}
+
           </span>
 
           <span className="new-price">
+
             ₹{product.price}
+
+          </span>
+
+          <span className="discount">
+
+            {discount}% OFF
+
           </span>
 
         </div>
 
+
         <p className="description">
+
           {product.description}
+
         </p>
+
 
         <div className="buttons">
 
@@ -89,11 +117,15 @@ function ProductDetails() {
             className="cart-btn"
             onClick={() => addToCart(product)}
           >
+
             Add To Cart
+
           </button>
 
           <button className="buy-btn">
+
             Buy Now
+
           </button>
 
         </div>

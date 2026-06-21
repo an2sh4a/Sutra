@@ -151,3 +151,15 @@
 
   transition:0.3s;
 }
+.discount{
+  color:#2E7D32;
+  font-weight:700;
+  font-size:18px;
+}
+
+.price-box{
+  display:flex;
+  align-items:center;
+  gap:18px;
+  margin-bottom:25px;
+}

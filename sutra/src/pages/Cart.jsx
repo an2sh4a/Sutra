@@ -28,7 +28,9 @@ function Cart() {
         cart.length === 0 ?
 
         <p className="empty-cart">
+
           Your cart is empty
+
         </p>
 
         :
@@ -70,7 +72,19 @@ function Cart() {
 
                     </span>
 
+                    <span className="discount">
+
+                      22% OFF
+
+                    </span>
+
                   </div>
+
+                  <p className="item-total">
+
+                    Item Total : ₹{item.price * item.quantity}
+
+                  </p>
 
                   <div className="quantity-box">
 
@@ -129,39 +143,107 @@ function Cart() {
 
           <div className="summary">
 
-            <div className="row">
+          <h2 className="summary-title">
 
-              <span>Subtotal</span>
+          Order Summary
 
-              <span>₹{total}</span>
+          </h2>
 
-            </div>
+          <div className="summary-row">
 
-            <div className="row">
+          <span>
 
-              <span>Shipping</span>
+          Items (
 
-              <span>Free</span>
+          {
 
-            </div>
+          cart.reduce(
 
-            <div className="row total-row">
+          (sum,item)=>sum+item.quantity,
 
-              <span>Total</span>
+          0
 
-              <span>₹{total}</span>
+          )
 
-            </div>
+          }
 
-            <Link to="/checkout">
+          )
 
-            <button className="checkout-btn">
+          </span>
 
-            Proceed To Checkout
+          <span>
 
-            </button>
+          ₹{total}
 
-            </Link>
+          </span>
+
+          </div>
+
+          <div className="summary-row">
+
+          <span>
+
+          Shipping
+
+          </span>
+
+          <span className="free">
+
+          FREE
+
+          </span>
+
+          </div>
+
+          <div className="summary-row">
+
+          <span>
+
+          Discount
+
+          </span>
+
+          <span className="saved">
+
+          - ₹{cart.length * 100}
+
+          </span>
+
+          </div>
+
+          <hr />
+
+          <div className="grand-total">
+
+          <span>
+
+          Grand Total
+
+          </span>
+
+          <span>
+
+          ₹{total}
+
+          </span>
+
+          </div>
+
+          <p className="saved-message">
+
+          You Saved ₹{cart.length * 100} 🎉
+
+          </p>
+
+          <Link to="/checkout">
+
+          <button className="checkout-btn">
+
+          Proceed To Checkout
+
+          </button>
+
+          </Link>
 
           </div>
 

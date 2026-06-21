@@ -48,7 +48,7 @@
   display:flex;
   align-items:center;
   gap:15px;
-  margin-bottom:20px;
+  margin-bottom:10px;
 }
 
 .old-price{
@@ -61,6 +61,16 @@
   color:#8B5E3C;
   font-size:30px;
   font-weight:bold;
+}
+
+.discount{
+  color:#2E7D32;
+  font-weight:700;
+}
+
+.item-total{
+  color:#666;
+  margin-bottom:20px;
 }
 
 .quantity-box{
@@ -129,4 +139,48 @@
   color:white;
   font-size:18px;
   cursor:pointer;
+}
+
+.summary-title{
+  font-size:28px;
+  color:#8B5E3C;
+  margin-bottom:30px;
+}
+
+.summary-row{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:18px;
+  font-size:20px;
+}
+
+.summary hr{
+  border:none;
+  border-top:1px solid #eee;
+  margin:25px 0;
+}
+
+.grand-total{
+  display:flex;
+  justify-content:space-between;
+  font-size:32px;
+  font-weight:bold;
+  color:#8B5E3C;
+}
+
+.free{
+  color:#2E7D32;
+  font-weight:700;
+}
+
+.saved{
+  color:#2E7D32;
+  font-weight:700;
+}
+
+.saved-message{
+  text-align:center;
+  margin-top:25px;
+  color:#2E7D32;
+  font-weight:600;
 }
