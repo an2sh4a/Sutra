@@ -1,8 +1,11 @@
 import { useState } from 'react'
 import { supabase } from '../services/supabaseClient'
 import './Checkout.css'
+import { useNavigate } from 'react-router-dom'
 
 function Checkout() {
+
+  const navigate = useNavigate()
 
   const [customerName, setCustomerName] = useState('')
   const [phone, setPhone] = useState('')
@@ -148,8 +151,7 @@ function Checkout() {
     }
 
     else{
-
-      alert('Order placed successfully')
+        navigate('/success')
 
       setCustomerName('')
       setPhone('')
