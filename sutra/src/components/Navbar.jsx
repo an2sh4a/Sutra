@@ -1,8 +1,8 @@
 import './Navbar.css'
 import { Link } from 'react-router-dom'
+import { FiHeart, FiShoppingBag } from 'react-icons/fi'
 
-function Navbar({ search, setSearch }) {
-
+function Navbar() {
   return (
     <nav className="navbar">
 
@@ -14,18 +14,16 @@ function Navbar({ search, setSearch }) {
         type="text"
         placeholder="Search jewellery..."
         className="search-bar"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
       />
 
       <div className="nav-icons">
 
-        <Link to="/wishlist" className="wishlist-icon">
-          ♡
-        </Link>
+        <button className="icon-btn">
+          <FiHeart />
+        </button>
 
-        <Link to="/cart" className="cart-link">
-          🛒
+        <Link to="/cart" className="icon-btn">
+          <FiShoppingBag />
         </Link>
 
         <button className="login-btn">
@@ -36,7 +34,6 @@ function Navbar({ search, setSearch }) {
 
     </nav>
   )
-
 }
 
 export default Navbar

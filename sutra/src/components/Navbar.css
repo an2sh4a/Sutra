@@ -2,9 +2,7 @@
   display:flex;
   justify-content:space-between;
   align-items:center;
-
   padding:18px 40px;
-
   background:#EFE6DD;
 }
 
@@ -15,79 +13,53 @@
 }
 
 .search-bar{
-  width:40%;
-  padding:12px;
-
+  width:42%;
+  padding:12px 18px;
   border:none;
-  border-radius:8px;
+  border-radius:10px;
+  outline:none;
+  font-size:16px;
 }
 
 .nav-icons{
   display:flex;
-  gap:12px;
-}
-
-.nav-icons button{
-  padding:10px 16px;
-
-  border:none;
-  border-radius:8px;
-
-  background:#D4A373;
-  color:white;
-
-  cursor:pointer;
-}
-
-.cart-btn{
-  text-decoration:none;
-  background:#D4A373;
-  color:white;
-
-  padding:10px 16px;
-
-  border-radius:8px;
-
-  display:flex;
   align-items:center;
-  justify-content:center;
+  gap:14px;
 }
 
-.wishlist-icon{
-  font-size:28px;
+.icon-btn{
   width:48px;
   height:48px;
-
   border:none;
-
-  border-radius:50%;
-
-  background:#D4A373;
-
-  color:white;
-
-  cursor:pointer;
-}
-
-.wishlist-icon,
-.cart-link{
-  text-decoration:none;
-  width:48px;
-  height:48px;
-  border-radius:50%;
+  border-radius:12px;
   background:#D4A373;
   color:white;
   display:flex;
   justify-content:center;
   align-items:center;
-  font-size:28px;
+  text-decoration:none;
+  cursor:pointer;
+  font-size:23px;
+  transition:.25s;
+}
+
+.icon-btn:hover{
+  background:#8B5E3C;
+  transform:translateY(-2px);
 }
 
 .login-btn{
-  padding:12px 18px;
+  padding:12px 22px;
   border:none;
-  border-radius:10px;
+  border-radius:12px;
   background:#D4A373;
   color:white;
+  font-size:16px;
   cursor:pointer;
+  transition:.25s;
+}
+
+.login-btn:hover{
+  background:#8B5E3C;
+  transform:translateY(-2px);
 }
