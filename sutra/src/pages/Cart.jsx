@@ -1,6 +1,7 @@
 import { useContext } from 'react'
-import { CartContext } from '../context/CartContext'
 import { Link } from 'react-router-dom'
+import { FiShoppingBag } from 'react-icons/fi'
+import { CartContext } from '../context/CartContext'
 import './Cart.css'
 
 function Cart() {
@@ -29,6 +30,46 @@ function Cart() {
 
   const saved = originalTotal - total
 
+  if (cart.length === 0) {
+
+    return (
+
+      <div className="empty-cart-container">
+
+        <div className="empty-cart-box">
+
+          <div className="empty-icon">
+
+            <FiShoppingBag />
+
+          </div>
+
+          <h1>Your Sutrā Bag is Empty</h1>
+
+          <p>
+
+            Looks like you haven't added any handcrafted jewellery yet.
+
+          </p>
+
+          <Link to="/">
+
+            <button className="shop-btn">
+
+              Explore Collection
+
+            </button>
+
+          </Link>
+
+        </div>
+
+      </div>
+
+    )
+
+  }
+
   return (
 
     <div className="cart-layout">
@@ -39,26 +80,11 @@ function Cart() {
 
         {
 
-          cart.length === 0 ?
-
-          <p className="empty-cart">
-
-            Your cart is empty
-
-          </p>
-
-          :
-
           cart.map((item) => {
 
             const discount = Math.round(
-
-              ((item.original_price - item.price)
-
-              / item.original_price)
-
-              * 100
-
+              ((item.original_price - item.price) /
+              item.original_price) * 100
             )
 
             return (
@@ -110,23 +136,11 @@ function Cart() {
 
                   <div className="quantity-box">
 
-                    <button onClick={() => decreaseQuantity(item.id)}>
+                    <button onClick={() => decreaseQuantity(item.id)}>-</button>
 
-                      -
+                    <span>{item.quantity}</span>
 
-                    </button>
-
-                    <span>
-
-                      {item.quantity}
-
-                    </span>
-
-                    <button onClick={() => increaseQuantity(item.id)}>
-
-                      +
-
-                    </button>
+                    <button onClick={() => increaseQuantity(item.id)}>+</button>
 
                   </div>
 
@@ -163,146 +177,86 @@ function Cart() {
 
       </div>
 
+      <div className="cart-right">
 
-      {
+        <div className="summary">
 
-        cart.length > 0 &&
+          <h2>Order Summary</h2>
 
-        <div className="cart-right">
+          <div className="bill-row big-row">
 
-          <div className="summary">
+            <span>Items ({totalItems})</span>
 
-            <h2>
-
-              Order Summary
-
-            </h2>
-
-
-            <div className="bill-row big-row">
-
-              <span>
-
-                Items ({totalItems})
-
-              </span>
-
-              <span>
-
-                ₹{originalTotal}
-
-              </span>
-
-            </div>
-
-
-            {
-
-              cart.map(item => (
-
-                <div
-                  key={item.id}
-                  className="summary-item"
-                >
-
-                  <span>
-
-                    {item.name} × {item.quantity}
-
-                  </span>
-
-                  <span>
-
-                    ₹{item.original_price * item.quantity}
-
-                  </span>
-
-                </div>
-
-              ))
-
-            }
-
-
-            <hr />
-
-
-            <div className="bill-row">
-
-              <span>
-
-                Discount
-
-              </span>
-
-              <span className="saved">
-
-                - ₹{saved}
-
-              </span>
-
-            </div>
-
-
-            <div className="bill-row">
-
-              <span>
-
-                Shipping
-
-              </span>
-
-              <span className="free">
-
-                FREE
-
-              </span>
-
-            </div>
-
-
-            <hr />
-
-
-            <div className="grand-total">
-
-              <span>
-
-                Grand Total
-
-              </span>
-
-              <span>
-
-                ₹{total}
-
-              </span>
-
-            </div>
-
-
-            <p className="saved-message">
-
-              You Saved ₹{saved} 🎉
-
-            </p>
-
-
-            <Link to="/checkout">
-
-              <button className="checkout-btn">
-
-                Proceed To Checkout
-
-              </button>
-
-            </Link>
+            <span>₹{originalTotal}</span>
 
           </div>
 
+          {
+
+            cart.map(item => (
+
+              <div
+                className="summary-item"
+                key={item.id}
+              >
+
+                <span>{item.name} × {item.quantity}</span>
+
+                <span>₹{item.original_price * item.quantity}</span>
+
+              </div>
+
+            ))
+
+          }
+
+          <hr />
+
+          <div className="bill-row">
+
+            <span>Discount</span>
+
+            <span className="saved">- ₹{saved}</span>
+
+          </div>
+
+          <div className="bill-row">
+
+            <span>Shipping</span>
+
+            <span className="free">FREE</span>
+
+          </div>
+
+          <hr />
+
+          <div className="grand-total">
+
+            <span>Grand Total</span>
+
+            <span>₹{total}</span>
+
+          </div>
+
+          <p className="saved-message">
+
+            You Saved ₹{saved} 🎉
+
+          </p>
+
+          <Link to="/checkout">
+
+            <button className="checkout-btn">
+
+              Proceed To Checkout
+
+            </button>
+
+          </Link>
+
         </div>
 
-      }
+      </div>
 
     </div>
 
