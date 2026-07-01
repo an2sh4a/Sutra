@@ -1,14 +1,29 @@
 import './Navbar.css'
 import { Link } from 'react-router-dom'
+import { useContext } from 'react'
 import { FiHeart, FiShoppingBag } from 'react-icons/fi'
+import { WishlistContext } from '../context/WishlistContext'
+import { CartContext } from '../context/CartContext'
 
 function Navbar() {
+
+  const { wishlist } = useContext(WishlistContext)
+  const { cart } = useContext(CartContext)
+
+  const cartCount = cart.reduce(
+    (sum, item) => sum + item.quantity,
+    0
+  )
+
   return (
+
     <nav className="navbar">
 
-      <div className="logo">
+      <Link to="/" className="logo">
+
         Sutrā
-      </div>
+
+      </Link>
 
       <input
         type="text"
@@ -18,22 +33,54 @@ function Navbar() {
 
       <div className="nav-icons">
 
-        <button className="icon-btn">
+        <Link to="/wishlist" className="icon-btn">
+
           <FiHeart />
-        </button>
+
+          {
+
+            wishlist.length > 0 &&
+
+            <span className="badge">
+
+              {wishlist.length}
+
+            </span>
+
+          }
+
+        </Link>
 
         <Link to="/cart" className="icon-btn">
+
           <FiShoppingBag />
+
+          {
+
+            cartCount > 0 &&
+
+            <span className="badge">
+
+              {cartCount}
+
+            </span>
+
+          }
+
         </Link>
 
         <button className="login-btn">
+
           Login
+
         </button>
 
       </div>
 
     </nav>
+
   )
+
 }
 
 export default Navbar
