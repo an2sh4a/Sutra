@@ -208,51 +208,78 @@
   font-weight:700;
   color:#2F2118;
 }
+
 .quantity-box{
   width:110px;
   height:36px;
+
   display:flex;
   align-items:center;
   justify-content:space-between;
+
   border:1px solid #e2cdb9;
   border-radius:999px;
-  overflow:hidden;
   background:#fff;
+
+  padding:0 4px;
+  box-sizing:border-box;
+  overflow:hidden;
 }
 
 .quantity-box button{
-  width:36px;
-  height:36px;
-  border:none;
-  background:#F7F3EF;
-  color:#8B5E3C;
-  font-size:18px;
+  width:26px;
+  min-width:26px;
+  max-width:26px;
+
+  height:28px;
+  min-height:28px;
+  max-height:28px;
+
+  padding:0;
+  margin:0;
+
   display:flex;
   align-items:center;
   justify-content:center;
+
+  border:none;
+  border-radius:50%;
+
+  background:#A87542;
+  color:#fff;
+
+  font-size:20px;
+  line-height:1;
   cursor:pointer;
-  transition:.25s;
+
   flex-shrink:0;
+  box-sizing:border-box;
 }
+
 .quantity-box button:hover{
   background:#8B5E3C;
   color:#fff;
 }
 
 .quantity-box span{
+  flex:1;
+  text-align:center;
   font-size:15px;
   font-weight:700;
-  min-width:24px;
-  text-align:center;
+  color:#2F2118;
+  user-select:none;
 }
+
 .buttons{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:218px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:16px;    
 }
 
 .cart-btn,
 .buy-btn{
+  width:190px;  
   height:44px;
   border-radius:30px;
   font-size:16px;
