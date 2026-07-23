@@ -5,7 +5,7 @@ import { CartContext } from '../context/CartContext'
 import { FiHeart } from 'react-icons/fi'
 import './Wishlist.css'
 
-function Wishlist() {
+function Wishlist(){
 
   const {
     wishlist,
@@ -14,14 +14,14 @@ function Wishlist() {
 
   const { addToCart } = useContext(CartContext)
 
-  function moveToCart(item) {
-    addToCart(item)
-    removeFromWishlist(item.id)
+  function handleCart(product){
+    addToCart(product)
+    removeFromWishlist(product.id)
   }
 
-  if (wishlist.length === 0) {
+  if(wishlist.length===0){
 
-    return (
+    return(
 
       <div className="empty-wishlist-container">
 
@@ -29,7 +29,7 @@ function Wishlist() {
 
           <div className="empty-icon">
 
-            <FiHeart />
+            <FiHeart/>
 
           </div>
 
@@ -59,52 +59,57 @@ function Wishlist() {
 
   }
 
-  return (
+  return(
 
     <div className="wishlist-container">
 
-      <h1>My Wishlist</h1>
+      <div className="wishlist-header">
 
-      {
+        <h1>My Wishlist</h1>
 
-        wishlist.map((item) => {
+      </div>
 
-          const discount = Math.round(
-            ((item.original_price - item.price) /
-            item.original_price) * 100
-          )
+      <div className="wishlist-grid">
 
-          return (
+        {
 
-            <div
-              className="wishlist-card"
-              key={item.id}
-            >
+          wishlist.map(item=>{
 
-              <Link
-                to={`/product/${item.id}`}
-                className="wishlist-link"
+            const discount=Math.round(
+
+              ((item.original_price-item.price)/item.original_price)*100
+
+            )
+
+            return(
+
+              <div
+                className="wishlist-card"
+                key={item.id}
               >
-
-                <img
-                  src={item.image}
-                  alt={item.name}
-                />
-
-              </Link>
-
-              <div className="wishlist-info">
 
                 <Link
                   to={`/product/${item.id}`}
                   className="wishlist-link"
                 >
 
-                  <h2>
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                  />
 
-                    {item.name}
+                </Link>
 
-                  </h2>
+                <div className="wishlist-info">
+
+                  <Link
+                    to={`/product/${item.id}`}
+                    className="wishlist-link"
+                  >
+
+                    <h2>{item.name}</h2>
+
+                  </Link>
 
                   <p className="description">
 
@@ -134,55 +139,55 @@ function Wishlist() {
 
                   </div>
 
-                </Link>
+                  <p className="delivery">
 
-                <p className="delivery">
+                    🚚 Free Delivery
 
-                  🚚 Free Delivery
+                  </p>
 
-                </p>
+                  <div className="wishlist-buttons">
 
-                <div className="wishlist-buttons">
+                    <button
+                      className="cart-btn"
+                      onClick={()=>handleCart(item)}
+                    >
 
-                  <Link to={`/product/${item.id}`}>
-
-                    <button className="view-btn">
-
-                      View Details
+                      Add To Cart
 
                     </button>
 
-                  </Link>
+                    <Link to={`/product/${item.id}`}>
 
-                  <button
-                    className="cart-btn"
-                    onClick={() => moveToCart(item)}
-                  >
+                      <button className="view-btn">
 
-                    Move To Cart
+                        View Details
 
-                  </button>
+                      </button>
 
-                  <button
-                    className="remove-btn"
-                    onClick={() => removeFromWishlist(item.id)}
-                  >
+                    </Link>
 
-                    Remove
+                    <button
+                      className="remove-btn"
+                      onClick={()=>removeFromWishlist(item.id)}
+                    >
 
-                  </button>
+                      Remove
+
+                    </button>
+
+                  </div>
 
                 </div>
 
               </div>
 
-            </div>
+            )
 
-          )
+          })
 
-        })
+        }
 
-      }
+      </div>
 
     </div>
 
