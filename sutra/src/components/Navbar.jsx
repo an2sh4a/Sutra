@@ -4,6 +4,7 @@ import { useContext } from 'react'
 import { FiHeart, FiShoppingBag } from 'react-icons/fi'
 import { WishlistContext } from '../context/WishlistContext'
 import { CartContext } from '../context/CartContext'
+import logo from '../assets/images/sutra-logo.png'
 
 function Navbar() {
 
@@ -21,7 +22,10 @@ function Navbar() {
 
       <Link to="/" className="logo">
 
-        Sutrā
+      <img
+        src={logo}
+        alt="Sutrā"
+      />
 
       </Link>
 
