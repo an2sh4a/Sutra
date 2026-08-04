@@ -5,8 +5,8 @@
   display:flex;
   align-items:center;
   justify-content:space-between;
-  height:82px;
-  padding:0 42px;
+  height:72px;
+padding:10 28px;
   background:#F8F4EF;
   border-bottom:1px solid #E7D7C9;
 }
@@ -19,7 +19,7 @@
 }
 
 .logo img{
-  height:90px;
+  height:110px;
   width:auto;
   object-fit:contain;
   display:block;

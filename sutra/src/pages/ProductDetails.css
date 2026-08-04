@@ -52,7 +52,7 @@
 
 .image-card img{
   width:100%;
-  height:500px;
+  height:550px;
   object-fit:cover;
   display:block;
   transition:.35s;
@@ -227,38 +227,31 @@
 }
 
 .quantity-box button{
-  width:26px;
-  min-width:26px;
-  max-width:26px;
+  width:30px !important;
+  height:30px !important;
 
-  height:28px;
-  min-height:28px;
-  max-height:28px;
+  background:transparent !important;
+  border:none !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
 
-  padding:0;
-  margin:0;
+  color:#8B5E3C !important;
 
   display:flex;
   align-items:center;
   justify-content:center;
 
-  border:none;
-  border-radius:50%;
-
-  background:#A87542;
-  color:#fff;
-
   font-size:20px;
-  line-height:1;
-  cursor:pointer;
+  font-weight:700;
+  padding:0;
+  margin:0;
 
-  flex-shrink:0;
-  box-sizing:border-box;
+  cursor:pointer;
 }
 
 .quantity-box button:hover{
-  background:#8B5E3C;
-  color:#fff;
+  background:transparent !important;
+  color:#6f4429 !important;
 }
 
 .quantity-box span{
@@ -525,12 +518,6 @@
   .quantity-box{
     width:130px;
     height:42px;
-  }
-
-  .quantity-box button{
-    width:40px;
-    height:40px;
-    font-size:18px;
   }
 
   .quantity-box span{
