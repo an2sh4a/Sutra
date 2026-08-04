@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import { supabase } from '../services/supabaseClient'
+import { SearchContext } from '../context/SearchContext'
 
-import Navbar from '../components/Navbar'
 import Hero from '../components/Hero'
 import ProductGrid from '../components/ProductGrid'
 import Footer from '../components/Footer'
@@ -10,9 +10,10 @@ import CustomerWords from '../components/CustomerWords'
 
 function Home() {
 
+  const { search } = useContext(SearchContext)
+
   const [products,setProducts]=useState([])
   const [filteredProducts,setFilteredProducts]=useState([])
-  const [search,setSearch]=useState("")
 
   useEffect(()=>{
     fetchProducts()
@@ -30,7 +31,6 @@ function Home() {
     setFilteredProducts(filtered)
 
   },[search,products])
-
 
   async function fetchProducts(){
 
@@ -53,12 +53,18 @@ function Home() {
 
   }
 
-
   function filterCategory(category){
 
     if(category==="All"){
 
-      setFilteredProducts(products)
+      const filtered=products.filter((item)=>
+
+        item.name.toLowerCase()
+        .includes(search.toLowerCase())
+
+      )
+
+      setFilteredProducts(filtered)
       return
 
     }
@@ -67,7 +73,8 @@ function Home() {
 
       (item)=>
 
-      item.category===category
+      item.category===category &&
+      item.name.toLowerCase().includes(search.toLowerCase())
 
     )
 

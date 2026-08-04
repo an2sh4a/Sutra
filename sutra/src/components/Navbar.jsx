@@ -1,31 +1,60 @@
 import './Navbar.css'
-import { Link } from 'react-router-dom'
-import { useContext } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useContext, useState } from 'react'
 import { FiHeart, FiShoppingBag } from 'react-icons/fi'
 import { WishlistContext } from '../context/WishlistContext'
 import { CartContext } from '../context/CartContext'
+import { SearchContext } from '../context/SearchContext'
 import logo from '../assets/images/sutra-logo.png'
 
 function Navbar() {
 
+  const navigate = useNavigate()
+
   const { wishlist } = useContext(WishlistContext)
   const { cart } = useContext(CartContext)
+  const { setSearch } = useContext(SearchContext)
+
+  const [input, setInput] = useState('')
 
   const cartCount = cart.reduce(
     (sum, item) => sum + item.quantity,
     0
   )
 
-  return (
+  function handleSearch(e){
+
+    if(e.key === 'Enter'){
+
+      setSearch(input)
+
+      navigate('/')
+
+    }
+
+  }
+
+  function handleLogoClick(){
+
+    setSearch('')
+    setInput('')
+
+  }
+
+  return(
 
     <nav className="navbar">
 
-      <Link to="/" className="logo">
+      <Link
+        to="/"
+        className="logo"
+        onClick={handleLogoClick}
+      >
 
-      <img
-        src={logo}
-        alt="Sutrā"
-      />
+        <img
+          src={logo}
+          alt="Sutrā"
+        />
 
       </Link>
 
@@ -33,50 +62,47 @@ function Navbar() {
         type="text"
         placeholder="Search jewellery..."
         className="search-bar"
+        value={input}
+        onChange={(e)=>setInput(e.target.value)}
+        onKeyDown={handleSearch}
       />
 
       <div className="nav-icons">
 
-        <Link to="/wishlist" className="icon-btn">
+        <Link
+          to="/wishlist"
+          className="icon-btn"
+        >
 
           <FiHeart />
 
           {
-
-            wishlist.length > 0 &&
-
+            wishlist.length>0 &&
             <span className="badge">
-
               {wishlist.length}
-
             </span>
-
           }
 
         </Link>
 
-        <Link to="/cart" className="icon-btn">
+        <Link
+          to="/cart"
+          className="icon-btn"
+        >
 
           <FiShoppingBag />
 
           {
-
-            cartCount > 0 &&
-
+            cartCount>0 &&
             <span className="badge">
-
               {cartCount}
-
             </span>
-
           }
 
         </Link>
 
         <button className="login-btn">
-
           Login
-
         </button>
 
       </div>

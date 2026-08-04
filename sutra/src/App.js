@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-
+import { SearchProvider } from './context/SearchContext'
 import { CartProvider } from './context/CartContext'
 import { WishlistProvider } from './context/WishlistContext'
 import Navbar from './components/Navbar'
@@ -17,6 +17,8 @@ function App() {
     <WishlistProvider>
 
       <CartProvider>
+
+        <SearchProvider>
 
         <BrowserRouter>
 
@@ -62,6 +64,8 @@ function App() {
           </Routes>
 
         </BrowserRouter>
+
+        </SearchProvider>
 
       </CartProvider>
 
