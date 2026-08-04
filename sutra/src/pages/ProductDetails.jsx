@@ -58,14 +58,6 @@ function ProductDetails() {
   return (
     <div className="product-page">
 
-      <div className="breadcrumb">
-        <Link to="/">Home</Link>
-        <span>/</span>
-        <span>{product.category}</span>
-        <span>/</span>
-        <span>{product.name}</span>
-      </div>
-
       <div className="details-container">
 
         <div className="details-image-section">

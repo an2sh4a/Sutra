@@ -11,26 +11,6 @@
   align-items:center;
 }
 
-.breadcrumb{
-  display:flex;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:8px;
-  margin-bottom:26px;
-  font-size:13px;
-  color:#777;
-}
-
-.breadcrumb a{
-  text-decoration:none;
-  color:#8B5E3C;
-  font-weight:600;
-}
-
-.breadcrumb a:hover{
-  text-decoration:underline;
-}
-
 .details-container{
   display:grid;
   grid-template-columns:420px 1fr;
