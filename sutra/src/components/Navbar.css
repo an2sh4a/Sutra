@@ -3,11 +3,11 @@
   top:0;
   z-index:1000;
   display:grid;
-  align-items:center;
   grid-template-columns:auto 1fr auto;
-  height:84px;
-  padding:0 34px;
-  column-gap:48px;
+  align-items:center;
+  column-gap:32px;
+  min-height:90px;
+  padding:0 28px;
   background:#F8F4EF;
   border-bottom:1px solid #E7D7C9;
 }
@@ -15,29 +15,29 @@
 .logo{
   display:flex;
   align-items:center;
+  justify-content:flex-start;
   text-decoration:none;
-  flex-shrink:0;
-  padding-right:18px;
 }
 
 .logo img{
-  height:70px;
+  height:76px;
   width:auto;
   display:block;
   object-fit:contain;
-  transition:opacity .25s ease;
+  transition:transform .25s ease,filter .25s ease;
 }
 
 .logo:hover img{
-    opacity:.85;
+  filter:brightness(1.08);
 }
 
 .search-bar{
-  width:480px;
+  width:520px;
+  max-width:100%;
   height:46px;
+  justify-self:center;
   padding:0 20px;
   border:1px solid #E4CCB6;
-  justify-self:center;
   border-radius:999px;
   background:#fff;
   outline:none;
@@ -53,6 +53,7 @@
 .nav-icons{
   display:flex;
   align-items:center;
+  justify-content:flex-end;
   gap:18px;
 }
 

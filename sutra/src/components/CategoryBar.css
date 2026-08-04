@@ -1,28 +1,27 @@
 .category-bar{
-
   display:flex;
   justify-content:center;
-  gap:45px;
-
-  padding:22px;
-
+  align-items:center;
+  gap:52px;
+  min-height:60px;
+  padding:0 28px;
   background:#EFE6DD;
+  border-top:1px solid #F5EEE8;
+  border-bottom:1px solid #E7D7C9;
 }
 
 .category-bar span{
-
+  display:flex;
+  align-items:center;
+  height:64px;
   cursor:pointer;
-
-  font-size:22px;
-
+  font-size:20px;
+  font-weight:500;
   color:#5D4037;
-
-  transition:0.3s;
+  transition:color .25s ease,transform .25s ease;
 }
 
 .category-bar span:hover{
-
   color:#A06A43;
-
   transform:translateY(-2px);
 }
