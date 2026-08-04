@@ -1,28 +1,28 @@
-import { createContext, useState } from 'react'
+import { createContext,useState } from 'react'
 
-export const CartContext = createContext()
+export const CartContext=createContext()
 
-export function CartProvider({ children }) {
+export function CartProvider({children}){
 
-  const [cart, setCart] = useState([])
+  const [cart,setCart]=useState([])
 
-  function addToCart(product) {
+  function addToCart(product){
 
-    const existing = cart.find(
-      item => item.id === product.id
+    const existing=cart.find(
+      item=>item.id===product.id
     )
 
     if(existing){
 
       setCart(
 
-        cart.map(item =>
+        cart.map(item=>
 
-          item.id === product.id
+          item.id===product.id
 
           ?
 
-          {...item, quantity:item.quantity+1}
+          {...item,quantity:item.quantity+1}
 
           :
 
@@ -58,7 +58,7 @@ export function CartProvider({ children }) {
 
     setCart(
 
-      cart.map(item =>
+      cart.map(item=>
 
         item.id===id
 
@@ -86,7 +86,7 @@ export function CartProvider({ children }) {
 
     setCart(
 
-      cart.map(item =>
+      cart.map(item=>
 
         item.id===id
 
@@ -126,6 +126,12 @@ export function CartProvider({ children }) {
 
   }
 
+  function clearCart(){
+
+    setCart([])
+
+  }
+
   return(
 
     <CartContext.Provider
@@ -140,7 +146,9 @@ export function CartProvider({ children }) {
 
         decreaseQuantity,
 
-        removeItem
+        removeItem,
+
+        clearCart
 
       }}
 
