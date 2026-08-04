@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 import { CartProvider } from './context/CartContext'
 import { WishlistProvider } from './context/WishlistContext'
-
+import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import ProductDetails from './pages/ProductDetails'
 import Cart from './pages/Cart'
@@ -14,12 +14,13 @@ import AdminDashboard from './pages/AdminDashboard'
 function App() {
 
   return (
-
     <WishlistProvider>
 
       <CartProvider>
 
         <BrowserRouter>
+
+          <Navbar />
 
           <Routes>
 
@@ -44,18 +45,18 @@ function App() {
             />
 
             <Route
-            path="/checkout"
-            element={<Checkout />}
+              path="/checkout"
+              element={<Checkout />}
             />
 
             <Route
-            path="/success"
-            element={<OrderSuccess />}
+              path="/success"
+              element={<OrderSuccess />}
             />
 
             <Route
-            path="/admin"
-            element={<AdminDashboard />}
+              path="/admin"
+              element={<AdminDashboard />}
             />
 
           </Routes>
@@ -65,7 +66,6 @@ function App() {
       </CartProvider>
 
     </WishlistProvider>
-
   )
 
 }

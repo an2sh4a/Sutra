@@ -79,11 +79,6 @@ function Home() {
 
     <div>
 
-      <Navbar
-        search={search}
-        setSearch={setSearch}
-      />
-
       <CategoryBar
         filterCategory={filterCategory}
       />
