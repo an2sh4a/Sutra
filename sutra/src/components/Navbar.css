@@ -2,11 +2,12 @@
   position:sticky;
   top:0;
   z-index:1000;
-  display:flex;
+  display:grid;
   align-items:center;
-  justify-content:space-between;
-  height:82px;
-  padding:0 36px;
+  grid-template-columns:auto 1fr auto;
+  height:84px;
+  padding:0 34px;
+  column-gap:48px;
   background:#F8F4EF;
   border-bottom:1px solid #E7D7C9;
 }
@@ -14,23 +15,21 @@
 .logo{
   display:flex;
   align-items:center;
-  justify-content:center;
-  width:180px;
-  height:100%;
-  flex-shrink:0;
   text-decoration:none;
+  flex-shrink:0;
+  padding-right:18px;
 }
 
 .logo img{
-  width:160px;
-  height:auto;
+  height:70px;
+  width:auto;
   display:block;
   object-fit:contain;
-  transition:.25s;
+  transition:opacity .25s ease;
 }
 
 .logo:hover img{
-  transform:scale(1.03);
+    opacity:.85;
 }
 
 .search-bar{
@@ -38,6 +37,7 @@
   height:46px;
   padding:0 20px;
   border:1px solid #E4CCB6;
+  justify-self:center;
   border-radius:999px;
   background:#fff;
   outline:none;
