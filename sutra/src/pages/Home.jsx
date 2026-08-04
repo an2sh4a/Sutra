@@ -1,4 +1,5 @@
 import { useEffect, useState, useContext } from 'react'
+import { useLocation } from 'react-router-dom'
 import { supabase } from '../services/supabaseClient'
 import { SearchContext } from '../context/SearchContext'
 
@@ -11,6 +12,7 @@ import CustomerWords from '../components/CustomerWords'
 function Home() {
 
   const { search } = useContext(SearchContext)
+  const location = useLocation()
 
   const [products,setProducts]=useState([])
   const [filteredProducts,setFilteredProducts]=useState([])
@@ -31,6 +33,23 @@ function Home() {
     setFilteredProducts(filtered)
 
   },[search,products])
+
+  useEffect(()=>{
+
+    if(location.state?.scrollToProducts){
+
+      document
+        .getElementById("featured-products")
+        ?.scrollIntoView({
+          behavior:"smooth",
+          block:"start"
+        })
+
+      window.history.replaceState({},document.title)
+
+    }
+
+  },[location])
 
   async function fetchProducts(){
 

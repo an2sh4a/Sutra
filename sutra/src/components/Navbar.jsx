@@ -24,11 +24,15 @@ function Navbar() {
 
   function handleSearch(e){
 
-    if(e.key === 'Enter'){
+    if(e.key==="Enter"){
 
       setSearch(input)
 
-      navigate('/')
+      navigate("/",{
+        state:{
+          scrollToProducts:true
+        }
+      })
 
     }
 
@@ -36,8 +40,10 @@ function Navbar() {
 
   function handleLogoClick(){
 
-    setSearch('')
-    setInput('')
+    setSearch("")
+    setInput("")
+
+    navigate("/")
 
   }
 

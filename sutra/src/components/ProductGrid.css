@@ -1,25 +1,19 @@
+.featured-products{
+  scroll-margin-top:110px;
+}
+
 .product-grid{
-
-    display:grid;
-
-    grid-template-columns:repeat(3,1fr);
-
-    gap:40px;
-
-    padding:60px 80px;
-
-    background:#F9F5F1;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:40px;
+  padding:60px 80px;
+  background:#F9F5F1;
 }
 
 .section-title{
-
-    text-align:center;
-
-    font-size:42px;
-
-    color:#8B5E3C;
-
-    margin-top:70px;
-
-    margin-bottom:20px;
+  text-align:center;
+  font-size:42px;
+  color:#8B5E3C;
+  margin-top:70px;
+  margin-bottom:20px;
 }

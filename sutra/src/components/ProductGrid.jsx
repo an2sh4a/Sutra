@@ -4,24 +4,26 @@ import ProductCard from './ProductCard'
 function ProductGrid({ products }) {
 
   return (
-    <section>
 
-    <h2 className="section-title">
+    <section id="featured-products" className="featured-products">
+
+      <h2 className="section-title">
         Featured Products
-    </h2>
+      </h2>
 
-    <div className="product-grid">
+      <div className="product-grid">
 
-      {products.map((product) => (
+        {products.map((product) => (
 
-        <ProductCard
-          key={product.id}
-          product={product}
-        />
+          <ProductCard
+            key={product.id}
+            product={product}
+          />
 
-      ))}
+        ))}
 
-    </div>
+      </div>
+
     </section>
 
   )
