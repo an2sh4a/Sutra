@@ -93,6 +93,25 @@
   font-size:26px;
 }
 
+.summary-product-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:10px 0 22px;
+  font-size:15px;
+  color:#666;
+}
+
+.discount-text{
+  color:#1E8E3E;
+  font-weight:700;
+}
+
+.free-delivery{
+  color:#1E8E3E;
+  font-weight:700;
+}
+
 .summary-items{
   display:flex;
   flex-direction:column;

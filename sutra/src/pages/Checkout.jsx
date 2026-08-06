@@ -19,11 +19,11 @@ function Checkout(){
   const [emailError,setEmailError]=useState('')
   const [pinError,setPinError]=useState('')
   const [addressError,setAddressError]=useState('')
-
+  const originalTotal = cart.reduce((sum,item)=>sum + item.original_price * item.quantity,0)
   const subtotal=cart.reduce((sum,item)=>sum+item.price*item.quantity,0)
-  const shipping=subtotal>=999||subtotal===0?0:99
-  const discount=0
-  const total=subtotal+shipping-discount
+  const shipping=0
+  const discount = originalTotal - subtotal
+  const total=subtotal
   const totalItems=cart.reduce((sum,item)=>sum+item.quantity,0)
 
   async function fetchLocation(pin){
@@ -52,6 +52,7 @@ function Checkout(){
   }
 
   async function placeOrder(){
+
     if(cart.length===0){
       alert('Your cart is empty.')
       return
@@ -94,7 +95,7 @@ function Checkout(){
       return
     }
 
-    const {error}=await supabase
+    const {data:order,error:orderError}=await supabase
       .from('orders')
       .insert([
         {
@@ -105,24 +106,52 @@ function Checkout(){
           city,
           state,
           pincode,
+          subtotal,
+          shipping,
+          discount,
           total_amount:total,
           status:'Pending'
         }
       ])
+      .select()
+      .single()
 
-    if(error){
-      console.log(error)
-    }else{
-      clearCart()
-      navigate('/success')
-      setCustomerName('')
-      setPhone('')
-      setEmail('')
-      setAddress('')
-      setCity('')
-      setState('')
-      setPincode('')
+    if(orderError){
+      console.log(orderError)
+      return
     }
+
+    const orderItems=cart.map(item=>({
+      order_id:order.id,
+      product_id:item.id,
+      product_name:item.name,
+      product_image:item.image,
+      product_price:item.price,
+      quantity:item.quantity,
+      subtotal:item.price*item.quantity
+    }))
+
+    const {error:itemError}=await supabase
+      .from('order_items')
+      .insert(orderItems)
+
+    if(itemError){
+      console.log(itemError)
+      return
+    }
+
+    clearCart()
+
+    setCustomerName('')
+    setPhone('')
+    setEmail('')
+    setAddress('')
+    setCity('')
+    setState('')
+    setPincode('')
+
+    navigate('/success')
+
   }
 
   return(
@@ -213,101 +242,52 @@ function Checkout(){
         <h2>Order Summary</h2>
 
         <div className="summary-items">
+          {cart.map(item=>(
+            <div className="summary-item" key={item.id}>
+              <img
+                src={item.image}
+                alt={item.name}
+              />
 
-          {cart.length===0?(
-            <p className="empty-summary">
-              Your cart is empty.
-            </p>
-          ):(
-            cart.map(item=>(
-              <div
-                className="summary-item"
-                key={item.id}
-              >
-
-                <img
-                  src={item.image}
-                  alt={item.name}
-                />
-
-                <div className="summary-info">
-                  <h4>{item.name}</h4>
-
-                  <p>
-                    Qty : {item.quantity}
-                  </p>
-                </div>
-
-                <span className="summary-price">
-                  ₹{item.price*item.quantity}
-                </span>
-
+              <div className="summary-info">
+                <h4>{item.name}</h4>
+                <p>Qty : {item.quantity}</p>
               </div>
-            ))
-          )}
-
+            </div>
+          ))}
         </div>
 
         <hr />
 
         <div className="summary-row">
-
-          <span>
-            Subtotal ({totalItems} Items)
-          </span>
-
-          <span>
-            ₹{subtotal}
-          </span>
-
+          <span>Items ({totalItems})</span>
+          <span>₹{originalTotal}</span>
         </div>
 
         <div className="summary-row">
-
-          <span>
-            Delivery
+          <span>Discount</span>
+          <span className="discount-text">
+            -₹{discount}
           </span>
-
-          <span>
-            {shipping===0?'FREE':`₹${shipping}`}
-          </span>
-
         </div>
 
         <div className="summary-row">
-
-          <span>
-            Discount
+          <span>Shipping</span>
+          <span className="free-delivery">
+            FREE
           </span>
-
-          <span>
-            ₹{discount}
-          </span>
-
         </div>
 
         <hr />
 
         <div className="summary-row total">
-
-          <span>
-            Total
-          </span>
-
-          <span>
-            ₹{total}
-          </span>
-
+          <span>Grand Total</span>
+          <span>₹{total}</span>
         </div>
 
         <div className="delivery-box">
-
           <p>🚚 Estimated Delivery</p>
-
-          <strong>
-            3 - 5 Business Days
-          </strong>
-
+          <strong>3 - 5 Business Days</strong>
         </div>
 
         <div className="secure-box">
