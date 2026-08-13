@@ -48,10 +48,16 @@ function ProductDetails() {
     addToCart(product,quantity)
   }
 
-  function handleBuyNow() {
-    handleAddToCart()
-    navigate('/checkout')
-  }
+  function handleBuyNow(){
+  navigate('/checkout',{
+    state:{
+      buyNowItem:{
+        ...product,
+        quantity
+      }
+    }
+  })
+}
 
   return (
     <div className="product-page">

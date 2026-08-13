@@ -1,13 +1,19 @@
 import { useState,useContext } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate,useLocation } from 'react-router-dom'
 import { supabase } from '../services/supabaseClient'
 import { CartContext } from '../context/CartContext'
 import { AuthContext } from '../context/AuthContext'
 import './Checkout.css'
+
 function Checkout(){
+  const location=useLocation()
   const navigate=useNavigate()
   const {cart,clearCart}=useContext(CartContext)
   const {user}=useContext(AuthContext)
+
+  const buyNowItem=location.state?.buyNowItem
+  const checkoutItems=buyNowItem?[buyNowItem]:cart
+
   const [customerName,setCustomerName]=useState('')
   const [phone,setPhone]=useState('')
   const [email,setEmail]=useState('')
@@ -21,12 +27,25 @@ function Checkout(){
   const [emailError,setEmailError]=useState('')
   const [pinError,setPinError]=useState('')
   const [addressError,setAddressError]=useState('')
-  const originalTotal = cart.reduce((sum,item)=>sum + item.original_price * item.quantity,0)
-  const subtotal=cart.reduce((sum,item)=>sum+item.price*item.quantity,0)
+
+  const originalTotal=checkoutItems.reduce(
+    (sum,item)=>sum+item.original_price*item.quantity,
+    0
+  )
+
+  const subtotal=checkoutItems.reduce(
+    (sum,item)=>sum+item.price*item.quantity,
+    0
+  )
+
   const shipping=0
-  const discount = originalTotal - subtotal
+  const discount=originalTotal-subtotal
   const total=subtotal
-  const totalItems=cart.reduce((sum,item)=>sum+item.quantity,0)
+
+  const totalItems=checkoutItems.reduce(
+    (sum,item)=>sum+item.quantity,
+    0
+  )
 
   async function fetchLocation(pin){
     if(pin.length!==6){
@@ -36,7 +55,10 @@ function Checkout(){
     }
 
     try{
-      const response=await fetch(`https://api.postalpincode.in/pincode/${pin}`)
+      const response=await fetch(
+        `https://api.postalpincode.in/pincode/${pin}`
+      )
+
       const data=await response.json()
 
       if(data[0].Status==="Success"){
@@ -54,13 +76,12 @@ function Checkout(){
   }
 
   async function placeOrder(){
-
     if(!user){
       navigate('/login')
       return
     }
 
-    if(cart.length===0){
+    if(checkoutItems.length===0){
       alert('Your cart is empty.')
       return
     }
@@ -129,7 +150,7 @@ function Checkout(){
       return
     }
 
-    const orderItems=cart.map(item=>({
+    const orderItems=checkoutItems.map(item=>({
       order_id:order.id,
       product_id:item.id,
       product_name:item.name,
@@ -148,7 +169,9 @@ function Checkout(){
       return
     }
 
-    clearCart()
+    if(!buyNowItem){
+      clearCart()
+    }
 
     setCustomerName('')
     setPhone('')
@@ -159,7 +182,6 @@ function Checkout(){
     setPincode('')
 
     navigate('/success')
-
   }
 
   return(
@@ -242,16 +264,17 @@ function Checkout(){
         >
           Place Order • ₹{total}
         </button>
-
       </div>
 
       <div className="order-summary">
-
         <h2>Order Summary</h2>
 
         <div className="summary-items">
-          {cart.map(item=>(
-            <div className="summary-item" key={item.id}>
+          {checkoutItems.map(item=>(
+            <div
+              className="summary-item"
+              key={item.id}
+            >
               <img
                 src={item.image}
                 alt={item.name}
@@ -259,7 +282,10 @@ function Checkout(){
 
               <div className="summary-info">
                 <h4>{item.name}</h4>
-                <p>Qty : {item.quantity}</p>
+
+                <p>
+                  Qty : {item.quantity}
+                </p>
               </div>
             </div>
           ))}
@@ -268,19 +294,30 @@ function Checkout(){
         <hr />
 
         <div className="summary-row">
-          <span>Items ({totalItems})</span>
-          <span>₹{originalTotal}</span>
+          <span>
+            Items ({totalItems})
+          </span>
+
+          <span>
+            ₹{originalTotal}
+          </span>
         </div>
 
         <div className="summary-row">
-          <span>Discount</span>
+          <span>
+            Discount
+          </span>
+
           <span className="discount-text">
             -₹{discount}
           </span>
         </div>
 
         <div className="summary-row">
-          <span>Shipping</span>
+          <span>
+            Shipping
+          </span>
+
           <span className="free-delivery">
             FREE
           </span>
@@ -289,25 +326,29 @@ function Checkout(){
         <hr />
 
         <div className="summary-row total">
-          <span>Grand Total</span>
-          <span>₹{total}</span>
+          <span>
+            Grand Total
+          </span>
+
+          <span>
+            ₹{total}
+          </span>
         </div>
 
         <div className="delivery-box">
           <p>🚚 Estimated Delivery</p>
-          <strong>3 - 5 Business Days</strong>
+
+          <strong>
+            3 - 5 Business Days
+          </strong>
         </div>
 
         <div className="secure-box">
           🔒 100% Secure Checkout
         </div>
-
       </div>
-
     </div>
-
   )
-
 }
 
 export default Checkout
