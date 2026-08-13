@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { SearchProvider } from './context/SearchContext'
 import { CartProvider } from './context/CartContext'
 import { WishlistProvider } from './context/WishlistContext'
+import { AuthProvider } from './context/AuthContext'
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import ProductDetails from './pages/ProductDetails'
@@ -10,11 +11,14 @@ import Wishlist from './pages/Wishlist'
 import Checkout from './pages/Checkout'
 import OrderSuccess from './pages/OrderSuccess'
 import AdminDashboard from './pages/AdminDashboard'
+import Login from './pages/Login'
 
 function App() {
 
   return (
-    <WishlistProvider>
+    <AuthProvider>
+
+      <WishlistProvider>
 
       <CartProvider>
 
@@ -52,6 +56,11 @@ function App() {
             />
 
             <Route
+              path="/login"
+              element={<Login />}
+            />
+
+            <Route
               path="/success"
               element={<OrderSuccess />}
             />
@@ -70,6 +79,8 @@ function App() {
       </CartProvider>
 
     </WishlistProvider>
+
+    </AuthProvider>
   )
 
 }
