@@ -12,6 +12,7 @@ import Checkout from './pages/Checkout'
 import OrderSuccess from './pages/OrderSuccess'
 import AdminDashboard from './pages/AdminDashboard'
 import Login from './pages/Login'
+import Signup from './pages/Signup'
 
 function App() {
 
@@ -59,7 +60,12 @@ function App() {
               path="/login"
               element={<Login />}
             />
-
+            
+            <Route
+              path="/signup"
+              element={<Signup />}
+            />
+            
             <Route
               path="/success"
               element={<OrderSuccess />}
