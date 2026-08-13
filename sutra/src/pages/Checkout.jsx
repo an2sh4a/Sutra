@@ -2,10 +2,12 @@ import { useState,useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../services/supabaseClient'
 import { CartContext } from '../context/CartContext'
+import { AuthContext } from '../context/AuthContext'
 import './Checkout.css'
 function Checkout(){
   const navigate=useNavigate()
   const {cart,clearCart}=useContext(CartContext)
+  const {user}=useContext(AuthContext)
   const [customerName,setCustomerName]=useState('')
   const [phone,setPhone]=useState('')
   const [email,setEmail]=useState('')
@@ -53,6 +55,11 @@ function Checkout(){
 
   async function placeOrder(){
 
+    if(!user){
+      navigate('/login')
+      return
+    }
+
     if(cart.length===0){
       alert('Your cart is empty.')
       return
@@ -99,6 +106,7 @@ function Checkout(){
       .from('orders')
       .insert([
         {
+          user_id:user.id,
           customer_name:customerName,
           phone,
           email,
