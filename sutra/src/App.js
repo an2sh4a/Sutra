@@ -13,6 +13,7 @@ import OrderSuccess from './pages/OrderSuccess'
 import AdminDashboard from './pages/AdminDashboard'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
+import MyOrders from './pages/MyOrders'
 
 function App() {
 
@@ -69,6 +70,11 @@ function App() {
             <Route
               path="/success"
               element={<OrderSuccess />}
+            />
+
+            <Route
+              path="/orders"
+              element={<MyOrders />}
             />
 
             <Route

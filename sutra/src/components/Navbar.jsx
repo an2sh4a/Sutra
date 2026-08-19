@@ -1,7 +1,7 @@
 import './Navbar.css'
 import { Link,useNavigate } from 'react-router-dom'
 import { useContext,useState } from 'react'
-import { FiHeart,FiShoppingBag } from 'react-icons/fi'
+import { FiHeart,FiShoppingBag,FiUser } from 'react-icons/fi'
 import { WishlistContext } from '../context/WishlistContext'
 import { CartContext } from '../context/CartContext'
 import { SearchContext } from '../context/SearchContext'
@@ -15,6 +15,7 @@ function Navbar(){
   const { setSearch }=useContext(SearchContext)
   const { user,logout }=useContext(AuthContext)
   const [input,setInput]=useState('')
+  const [accountOpen,setAccountOpen]=useState(false)
 
   const cartCount=cart.reduce(
     (sum,item)=>sum+item.quantity,
@@ -39,6 +40,7 @@ function Navbar(){
   }
 
   async function handleLogout(){
+    setAccountOpen(false)
     await logout()
     navigate("/")
   }
@@ -71,6 +73,7 @@ function Navbar(){
           className="icon-btn"
         >
           <FiHeart />
+
           {
             wishlist.length>0 &&
             <span className="badge">
@@ -84,6 +87,7 @@ function Navbar(){
           className="icon-btn"
         >
           <FiShoppingBag />
+
           {
             cartCount>0 &&
             <span className="badge">
@@ -94,13 +98,36 @@ function Navbar(){
 
         {
           user ? (
-            <div className="account-menu">
+            <div className="account-wrapper">
               <button
-                className="login-btn"
-                onClick={handleLogout}
+                className="account-btn"
+                onClick={()=>
+                  setAccountOpen(!accountOpen)
+                }
               >
-                Logout
+                <FiUser />
+                <span>Account</span>
               </button>
+
+              {
+                accountOpen &&
+                <div className="account-dropdown">
+                  <button
+                    onClick={()=>{
+                      setAccountOpen(false)
+                      navigate('/orders')
+                    }}
+                  >
+                    My Orders
+                  </button>
+
+                  <button
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
+                </div>
+              }
             </div>
           ) : (
             <button
