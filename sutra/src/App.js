@@ -14,6 +14,7 @@ import AdminDashboard from './pages/AdminDashboard'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import MyOrders from './pages/MyOrders'
+import OrderDetails from './pages/OrderDetails'
 
 function App() {
 
@@ -75,6 +76,11 @@ function App() {
             <Route
               path="/orders"
               element={<MyOrders />}
+            />
+
+            <Route
+              path="/orders/:id"
+              element={<OrderDetails />}
             />
 
             <Route
