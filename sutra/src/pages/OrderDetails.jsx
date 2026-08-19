@@ -192,15 +192,7 @@ function OrderDetails(){
                       Quantity: {item.quantity}
                     </p>
 
-                    <p>
-                      ₹{item.product_price} each
-                    </p>
-
                   </div>
-
-                  <strong>
-                    ₹{item.subtotal}
-                  </strong>
 
                 </div>
               ))
