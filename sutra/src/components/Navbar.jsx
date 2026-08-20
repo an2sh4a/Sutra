@@ -1,12 +1,11 @@
 import './Navbar.css'
 import { Link,useNavigate } from 'react-router-dom'
 import { useContext,useState,useEffect } from 'react'
-import { FiHeart,FiShoppingBag,FiUser,FiFilter,FiChevronDown } from 'react-icons/fi'
+import { FiHeart,FiShoppingBag,FiUser,FiFilter,FiChevronDown,FiX } from 'react-icons/fi'
 import { WishlistContext } from '../context/WishlistContext'
 import { CartContext } from '../context/CartContext'
 import { SearchContext } from '../context/SearchContext'
 import { AuthContext } from '../context/AuthContext'
-import { supabase } from '../services/supabaseClient'
 import logo from '../assets/images/sutra-logo.png'
 
 function Navbar(){
@@ -16,8 +15,6 @@ function Navbar(){
   const {
     search,
     setSearch,
-    selectedCategory,
-    setSelectedCategory,
     selectedPrice,
     setSelectedPrice,
     sortOption,
@@ -29,7 +26,6 @@ function Navbar(){
   const [accountOpen,setAccountOpen]=useState(false)
   const [filterOpen,setFilterOpen]=useState(false)
   const [sortOpen,setSortOpen]=useState(false)
-  const [categories,setCategories]=useState([])
   const cartCount=cart.reduce(
     (sum,item)=>sum+item.quantity,
     0
@@ -37,30 +33,13 @@ function Navbar(){
   useEffect(()=>{
     setInput(search)
   },[search])
-  useEffect(()=>{
-    fetchCategories()
-  },[])
-  async function fetchCategories(){
-    const {data,error}=await supabase
-      .from('products')
-      .select('category')
-    if(data){
-      const uniqueCategories=[
-        ...new Set(
-          data
-            .map(item=>item.category)
-            .filter(Boolean)
-        )
-      ]
-      setCategories(uniqueCategories)
-    }
-    if(error){
-      console.log(error)
-    }
-  }
   function handleSearch(e){
+    const value=e.target.value
+    setInput(value)
+    setSearch(value)
+  }
+  function handleSearchKeyDown(e){
     if(e.key==="Enter"){
-      setSearch(input)
       navigate("/",{
         state:{
           scrollToProducts:true
@@ -68,14 +47,18 @@ function Navbar(){
       })
     }
   }
+  function clearSearch(){
+    setInput('')
+    setSearch('')
+  }
   function handleLogoClick(){
-    setSearch("")
-    setInput("")
+    setInput('')
+    setSearch('')
     clearFilters()
-    setSortOption("Default")
+    setSortOption('Default')
     setFilterOpen(false)
     setSortOpen(false)
-    navigate("/")
+    navigate('/')
   }
   function handleFilterClick(){
     setFilterOpen(!filterOpen)
@@ -92,7 +75,7 @@ function Navbar(){
   async function handleLogout(){
     setAccountOpen(false)
     await logout()
-    navigate("/")
+    navigate('/')
   }
   return(
     <nav className="navbar">
@@ -107,20 +90,32 @@ function Navbar(){
         />
       </Link>
       <div className="search-area">
-        <input
-          type="text"
-          placeholder="Search jewellery..."
-          className="search-bar"
-          value={input}
-          onChange={(e)=>setInput(e.target.value)}
-          onKeyDown={handleSearch}
-        />
+        <div className="search-wrapper">
+          <input
+            type="text"
+            placeholder="Search jewellery..."
+            className="search-bar"
+            value={input}
+            onChange={handleSearch}
+            onKeyDown={handleSearchKeyDown}
+          />
+          {
+            input && (
+              <button
+                className="search-clear"
+                onClick={clearSearch}
+                aria-label="Clear search"
+              >
+                <FiX />
+              </button>
+            )
+          }
+        </div>
         <div className="browse-controls">
           <button
             className={
               "browse-btn "+
               (
-                selectedCategory!=="All" ||
                 selectedPrice!=="All"
                 ? "active"
                 : ""
@@ -149,25 +144,6 @@ function Navbar(){
             filterOpen && (
               <div className="browse-dropdown filter-dropdown">
                 <h3>Filter Products</h3>
-                <div className="filter-group">
-                  <label>Category</label>
-                  <select
-                    value={selectedCategory}
-                    onChange={(e)=>setSelectedCategory(e.target.value)}
-                  >
-                    <option value="All">All Categories</option>
-                    {
-                      categories.map(category=>(
-                        <option
-                          key={category}
-                          value={category}
-                        >
-                          {category}
-                        </option>
-                      ))
-                    }
-                  </select>
-                </div>
                 <div className="filter-group">
                   <label>Price</label>
                   <select

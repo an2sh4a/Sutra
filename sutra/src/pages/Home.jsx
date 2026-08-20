@@ -11,14 +11,13 @@ import CustomerWords from '../components/CustomerWords'
 function Home(){
   const {
     search,
-    selectedCategory,
-    setSelectedCategory,
     selectedPrice,
     sortOption
   }=useContext(SearchContext)
   const location=useLocation()
   const [products,setProducts]=useState([])
   const [filteredProducts,setFilteredProducts]=useState([])
+  const [selectedCategory,setSelectedCategory]=useState('All')
   useEffect(()=>{
     fetchProducts()
   },[])
@@ -26,7 +25,9 @@ function Home(){
     let filtered=[...products]
     if(search.trim()!==''){
       filtered=filtered.filter(item=>
-        item.name.toLowerCase().includes(search.toLowerCase())
+        item.name.toLowerCase().includes(
+          search.toLowerCase()
+        )
       )
     }
     if(selectedCategory!=='All'){
@@ -41,12 +42,14 @@ function Home(){
     }
     if(selectedPrice==='500to1000'){
       filtered=filtered.filter(item=>
-        item.price>=500&&item.price<=1000
+        item.price>=500 &&
+        item.price<=1000
       )
     }
     if(selectedPrice==='1000to2000'){
       filtered=filtered.filter(item=>
-        item.price>1000&&item.price<=2000
+        item.price>1000 &&
+        item.price<=2000
       )
     }
     if(selectedPrice==='above2000'){
@@ -62,8 +65,12 @@ function Home(){
     }
     if(sortOption==='Newest'){
       filtered.sort((a,b)=>{
-        const dateA=a.created_at?new Date(a.created_at).getTime():0
-        const dateB=b.created_at?new Date(b.created_at).getTime():0
+        const dateA=a.created_at
+          ? new Date(a.created_at).getTime()
+          : 0
+        const dateB=b.created_at
+          ? new Date(b.created_at).getTime()
+          : 0
         return dateB-dateA
       })
     }
@@ -77,12 +84,14 @@ function Home(){
   ])
   useEffect(()=>{
     if(location.state?.scrollToProducts){
-      document
-        .getElementById("featured-products")
-        ?.scrollIntoView({
-          behavior:"smooth",
-          block:"start"
-        })
+      setTimeout(()=>{
+        document
+          .getElementById("featured-products")
+          ?.scrollIntoView({
+            behavior:"smooth",
+            block:"start"
+          })
+      },100)
       window.history.replaceState({},document.title)
     }
   },[location])
@@ -100,6 +109,14 @@ function Home(){
   }
   function filterCategory(category){
     setSelectedCategory(category)
+    setTimeout(()=>{
+      document
+        .getElementById("featured-products")
+        ?.scrollIntoView({
+          behavior:"smooth",
+          block:"start"
+        })
+    },100)
   }
   return(
     <div>
