@@ -162,27 +162,31 @@ function OrderDetails(){
             </div>
 
             <div className="order-details-summary">
-              <div>
-                <span>Discount</span>
-                <span className="discount-value">
-                  -₹{order.discount}
-                </span>
-              </div>
-
-              <div>
-                <span>Shipping</span>
-                <span className="free-value">
-                  FREE
-                </span>
-              </div>
-
-              <div className="order-details-total">
-                <span>Grand Total</span>
-                <strong>
-                  ₹{order.total_amount}
-                </strong>
-              </div>
-            </div>
+  <div>
+    <span>Total Amount</span>
+    <span>
+      ₹{order.total_amount + order.discount}
+    </span>
+  </div>
+  <div>
+    <span>Discount</span>
+    <span className="discount-value">
+      -₹{order.discount}
+    </span>
+  </div>
+  <div>
+    <span>Shipping</span>
+    <span className="free-value">
+      FREE
+    </span>
+  </div>
+  <div className="order-details-total">
+    <span>Grand Total</span>
+    <strong>
+      ₹{order.total_amount}
+    </strong>
+  </div>
+</div>
 
           </div>
         </div>
@@ -206,6 +210,19 @@ function OrderDetails(){
         </div>
 
       </div>
+
+
+    <div className="order-help-section">
+    <span>
+        Need help with this order?
+    </span>
+    <a
+        href={`mailto:support@sutra.com?subject=Help with Order ${order.order_number}`}
+        className="order-help-btn"
+    >
+        Contact Support →
+    </a>
+    </div>
     </div>
   )
 }
