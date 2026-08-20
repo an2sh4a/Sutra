@@ -126,7 +126,6 @@ function OrderDetails(){
               🚚
             </span>
             <div>
-              <span>Estimated Delivery</span>
               <strong>3 - 5 Business Days</strong>
             </div>
           </div>
@@ -209,20 +208,19 @@ function OrderDetails(){
           </div>
         </div>
 
+        <div className="order-help-section">
+          <span>
+            Need help with this order?
+          </span>
+          <a
+            href={`mailto:support@sutra.com?subject=Help with Order ${order.order_number}`}
+            className="order-help-btn"
+          >
+            Contact Support →
+          </a>
+        </div>
+
       </div>
-
-
-    <div className="order-help-section">
-    <span>
-        Need help with this order?
-    </span>
-    <a
-        href={`mailto:support@sutra.com?subject=Help with Order ${order.order_number}`}
-        className="order-help-btn"
-    >
-        Contact Support →
-    </a>
-    </div>
     </div>
   )
 }
