@@ -4,17 +4,19 @@ import { AuthContext } from '../context/AuthContext'
 import './Login.css'
 
 function Login() {
-  const { login } = useContext(AuthContext)
+  const { login, resetPassword } = useContext(AuthContext)
   const navigate = useNavigate()
-
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
+  const [resetLoading, setResetLoading] = useState(false)
 
   async function handleLogin(e) {
     e.preventDefault()
     setError('')
+    setMessage('')
     setLoading(true)
 
     const { error } = await login(email, password)
@@ -28,10 +30,34 @@ function Login() {
     navigate('/')
   }
 
+  async function handleForgotPassword() {
+    setError('')
+    setMessage('')
+
+    if (!email.trim()) {
+      setError('Please enter your email address first.')
+      return
+    }
+
+    setResetLoading(true)
+
+    const { error } = await resetPassword(email)
+
+    if (error) {
+      setError(error.message)
+      setResetLoading(false)
+      return
+    }
+
+    setMessage('Password reset link sent. Please check your email.')
+    setResetLoading(false)
+  }
+
   return (
     <div className="auth-page">
       <div className="auth-card">
         <h1>Welcome Back</h1>
+
         <p className="auth-subtitle">
           Login to your Sutrā account.
         </p>
@@ -53,9 +79,24 @@ function Login() {
             required
           />
 
+          <button
+            type="button"
+            className="forgot-password"
+            onClick={handleForgotPassword}
+            disabled={resetLoading}
+          >
+            {resetLoading ? 'Sending link...' : 'Forgot Password?'}
+          </button>
+
           {error && (
             <p className="auth-error">
               {error}
+            </p>
+          )}
+
+          {message && (
+            <p className="auth-success">
+              {message}
             </p>
           )}
 

@@ -87,3 +87,23 @@
   font-size:14px;
   line-height:1.5;
 }
+.forgot-password {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 8px 0 12px;
+  color: #8b5e3c;
+  cursor: pointer;
+  font-size: 14px;
+  text-align: center;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+.auth-success {
+  color: green;
+  font-size: 14px;
+  margin: 10px 0;
+}

@@ -15,6 +15,7 @@ import Login from './pages/Login'
 import Signup from './pages/Signup'
 import MyOrders from './pages/MyOrders'
 import OrderDetails from './pages/OrderDetails'
+import ResetPassword from './pages/ResetPassword'
 
 function App() {
 
@@ -61,6 +62,10 @@ function App() {
             <Route
               path="/login"
               element={<Login />}
+            />
+            <Route 
+              path="/reset-password" 
+              element={<ResetPassword />} 
             />
             
             <Route
