@@ -14,30 +14,24 @@ function ProductCard({product}){
     addToWishlist,
     removeFromWishlist
   }=useContext(WishlistContext)
-
   const isWishlisted=wishlist.some(
     item=>item.id===product.id
   )
-
   const discount=Math.round(
     ((product.original_price-product.price)/product.original_price)*100
   )
-
   function handleWishlist(e){
     e.preventDefault()
-
     if(!user){
       navigate('/login')
       return
     }
-
     if(isWishlisted){
       removeFromWishlist(product.id)
     }else{
       addToWishlist(product)
     }
   }
-
   return(
     <div className="product-card">
       <button
@@ -52,7 +46,6 @@ function ProductCard({product}){
           <FiHeart className="heart-outline" />
         }
       </button>
-
       <Link
         to={`/product/${product.id}`}
         className="product-link"
@@ -61,19 +54,15 @@ function ProductCard({product}){
           src={product.image}
           alt={product.name}
         />
-
-        <h2>{product.name}</h2>
-
-        <div className="price-box">
-          <span className="old-price">
+        <div className="product-card-details">
+          <h2>{product.name}</h2>
+          <span className="product-card-old-price">
             ₹{product.original_price}
           </span>
-
-          <span className="new-price">
+          <span className="product-card-new-price">
             ₹{product.price}
           </span>
-
-          <span className="discount">
+          <span className="product-card-discount">
             {discount}% OFF
           </span>
         </div>
@@ -81,5 +70,4 @@ function ProductCard({product}){
     </div>
   )
 }
-
 export default ProductCard
