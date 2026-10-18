@@ -5,12 +5,53 @@ import './AdminDashboard.css'
 function AdminDashboard() {
 
   const [orders, setOrders] = useState([])
+  const [isAdmin, setIsAdmin] = useState(false)
+  const [checkingAdmin, setCheckingAdmin] = useState(true)
 
   useEffect(() => {
 
-    fetchOrders()
+    checkAdmin()
 
   }, [])
+
+  async function checkAdmin() {
+
+    setCheckingAdmin(true)
+
+    const {
+      data: { user },
+      error: userError
+    } = await supabase.auth.getUser()
+
+    if (userError || !user) {
+      setIsAdmin(false)
+      setCheckingAdmin(false)
+      return
+    }
+
+    const { data, error } = await supabase
+      .from('admins')
+      .select('id')
+      .eq('id', user.id)
+      .maybeSingle()
+
+    if (error) {
+      console.log(error)
+      setIsAdmin(false)
+    } else {
+      setIsAdmin(!!data)
+    }
+
+    setCheckingAdmin(false)
+  }
+
+  useEffect(() => {
+
+    if (isAdmin) {
+      fetchOrders()
+    }
+
+  }, [isAdmin])
 
   async function fetchOrders() {
 
@@ -20,17 +61,12 @@ function AdminDashboard() {
       .order('created_at', { ascending: false })
 
     if (data) {
-
       setOrders(data)
-
     }
 
     if (error) {
-
       console.log(error)
-
     }
-
   }
 
   const totalOrders = orders.length
@@ -47,6 +83,34 @@ function AdminDashboard() {
     (sum, order) => sum + Number(order.total_amount || 0),
     0
   )
+
+  if (checkingAdmin) {
+
+    return (
+      <div className="admin-container">
+
+        <h1>Checking access...</h1>
+
+      </div>
+    )
+
+  }
+
+  if (!isAdmin) {
+
+    return (
+      <div className="admin-container">
+
+        <h1>Access Denied</h1>
+
+        <p>
+          You do not have permission to access the admin dashboard.
+        </p>
+
+      </div>
+    )
+
+  }
 
   return (
 
