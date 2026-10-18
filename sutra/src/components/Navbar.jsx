@@ -1,17 +1,26 @@
 import './Navbar.css'
-import { Link,useNavigate } from 'react-router-dom'
-import { useContext,useState,useEffect } from 'react'
-import { FiHeart,FiShoppingBag,FiUser,FiFilter,FiChevronDown,FiX } from 'react-icons/fi'
+import { Link, useNavigate } from 'react-router-dom'
+import { useContext, useState, useEffect } from 'react'
+import {
+  FiHeart,
+  FiShoppingBag,
+  FiUser,
+  FiFilter,
+  FiChevronDown,
+  FiX
+} from 'react-icons/fi'
 import { WishlistContext } from '../context/WishlistContext'
 import { CartContext } from '../context/CartContext'
 import { SearchContext } from '../context/SearchContext'
 import { AuthContext } from '../context/AuthContext'
 import logo from '../assets/images/sutra-logo.png'
 
-function Navbar(){
-  const navigate=useNavigate()
-  const { wishlist }=useContext(WishlistContext)
-  const { cart }=useContext(CartContext)
+function Navbar() {
+  const navigate = useNavigate()
+
+  const { wishlist } = useContext(WishlistContext)
+  const { cart } = useContext(CartContext)
+
   const {
     search,
     setSearch,
@@ -20,38 +29,46 @@ function Navbar(){
     sortOption,
     setSortOption,
     clearFilters
-  }=useContext(SearchContext)
-  const { user,logout }=useContext(AuthContext)
-  const [input,setInput]=useState(search)
-  const [accountOpen,setAccountOpen]=useState(false)
-  const [filterOpen,setFilterOpen]=useState(false)
-  const [sortOpen,setSortOpen]=useState(false)
-  const cartCount=cart.reduce(
-    (sum,item)=>sum+item.quantity,
+  } = useContext(SearchContext)
+
+  const { user, logout } = useContext(AuthContext)
+
+  const [input, setInput] = useState(search)
+  const [accountOpen, setAccountOpen] = useState(false)
+  const [filterOpen, setFilterOpen] = useState(false)
+  const [sortOpen, setSortOpen] = useState(false)
+
+  const cartCount = cart.reduce(
+    (sum, item) => sum + item.quantity,
     0
   )
-  useEffect(()=>{
+
+  useEffect(() => {
     setInput(search)
-  },[search])
-  function handleSearch(e){
-    const value=e.target.value
+  }, [search])
+
+  function handleSearch(e) {
+    const value = e.target.value
     setInput(value)
     setSearch(value)
   }
-  function handleSearchKeyDown(e){
-    if(e.key==="Enter"){
-      navigate("/",{
-        state:{
-          scrollToProducts:true
+
+  function handleSearchKeyDown(e) {
+    if (e.key === 'Enter') {
+      navigate('/', {
+        state: {
+          scrollToProducts: true
         }
       })
     }
   }
-  function clearSearch(){
+
+  function clearSearch() {
     setInput('')
     setSearch('')
   }
-  function handleLogoClick(){
+
+  function handleLogoClick() {
     setInput('')
     setSearch('')
     clearFilters()
@@ -60,25 +77,31 @@ function Navbar(){
     setSortOpen(false)
     navigate('/')
   }
-  function handleFilterClick(){
+
+  function handleFilterClick() {
     setFilterOpen(!filterOpen)
     setSortOpen(false)
   }
-  function handleSortClick(){
+
+  function handleSortClick() {
     setSortOpen(!sortOpen)
     setFilterOpen(false)
   }
-  function selectSort(option){
+
+  function selectSort(option) {
     setSortOption(option)
     setSortOpen(false)
   }
-  async function handleLogout(){
+
+  async function handleLogout() {
     setAccountOpen(false)
     await logout()
     navigate('/')
   }
-  return(
+
+  return (
     <nav className="navbar">
+
       <Link
         to="/"
         className="logo"
@@ -89,8 +112,11 @@ function Navbar(){
           alt="Sutrā"
         />
       </Link>
+
       <div className="search-area">
+
         <div className="search-wrapper">
+
           <input
             type="text"
             placeholder="Search jewellery..."
@@ -99,6 +125,7 @@ function Navbar(){
             onChange={handleSearch}
             onKeyDown={handleSearchKeyDown}
           />
+
           {
             input && (
               <button
@@ -110,15 +137,18 @@ function Navbar(){
               </button>
             )
           }
+
         </div>
+
         <div className="browse-controls">
+
           <button
             className={
-              "browse-btn "+
+              'browse-btn ' +
               (
-                selectedPrice!=="All"
-                ? "active"
-                : ""
+                selectedPrice !== 'All'
+                  ? 'active'
+                  : ''
               )
             }
             onClick={handleFilterClick}
@@ -126,13 +156,14 @@ function Navbar(){
             <FiFilter />
             <span>Filter</span>
           </button>
+
           <button
             className={
-              "browse-btn "+
+              'browse-btn ' +
               (
-                sortOption!=="Default"
-                ? "active"
-                : ""
+                sortOption !== 'Default'
+                  ? 'active'
+                  : ''
               )
             }
             onClick={handleSortClick}
@@ -140,156 +171,225 @@ function Navbar(){
             <span>Sort By</span>
             <FiChevronDown />
           </button>
+
           {
             filterOpen && (
               <div className="browse-dropdown filter-dropdown">
+
                 <h3>Filter Products</h3>
+
                 <div className="filter-group">
+
                   <label>Price</label>
+
                   <select
                     value={selectedPrice}
-                    onChange={(e)=>setSelectedPrice(e.target.value)}
+                    onChange={(e) =>
+                      setSelectedPrice(e.target.value)
+                    }
                   >
-                    <option value="All">All Prices</option>
-                    <option value="under500">Under ₹500</option>
-                    <option value="500to1000">₹500 - ₹1,000</option>
-                    <option value="1000to2000">₹1,001 - ₹2,000</option>
-                    <option value="above2000">Above ₹2,000</option>
+                    <option value="All">
+                      All Prices
+                    </option>
+
+                    <option value="under500">
+                      Under ₹500
+                    </option>
+
+                    <option value="500to1000">
+                      ₹500 - ₹1,000
+                    </option>
+
+                    <option value="1000to2000">
+                      ₹1,001 - ₹2,000
+                    </option>
+
+                    <option value="above2000">
+                      Above ₹2,000
+                    </option>
                   </select>
+
                 </div>
+
                 <div className="filter-actions">
+
                   <button
                     className="clear-btn"
                     onClick={clearFilters}
                   >
                     Clear
                   </button>
+
                   <button
                     className="apply-btn"
-                    onClick={()=>setFilterOpen(false)}
+                    onClick={() => setFilterOpen(false)}
                   >
                     Apply
                   </button>
+
                 </div>
+
               </div>
             )
           }
+
           {
             sortOpen && (
               <div className="browse-dropdown sort-dropdown">
+
                 <h3>Sort Products</h3>
+
                 <button
                   className={
-                    sortOption==="Default"
-                    ? "sort-option selected"
-                    : "sort-option"
+                    sortOption === 'Default'
+                      ? 'sort-option selected'
+                      : 'sort-option'
                   }
-                  onClick={()=>selectSort("Default")}
+                  onClick={() => selectSort('Default')}
                 >
                   Default
                 </button>
+
                 <button
                   className={
-                    sortOption==="Price Low"
-                    ? "sort-option selected"
-                    : "sort-option"
+                    sortOption === 'Price Low'
+                      ? 'sort-option selected'
+                      : 'sort-option'
                   }
-                  onClick={()=>selectSort("Price Low")}
+                  onClick={() => selectSort('Price Low')}
                 >
                   Price: Low to High
                 </button>
+
                 <button
                   className={
-                    sortOption==="Price High"
-                    ? "sort-option selected"
-                    : "sort-option"
+                    sortOption === 'Price High'
+                      ? 'sort-option selected'
+                      : 'sort-option'
                   }
-                  onClick={()=>selectSort("Price High")}
+                  onClick={() => selectSort('Price High')}
                 >
                   Price: High to Low
                 </button>
+
                 <button
                   className={
-                    sortOption==="Newest"
-                    ? "sort-option selected"
-                    : "sort-option"
+                    sortOption === 'Newest'
+                      ? 'sort-option selected'
+                      : 'sort-option'
                   }
-                  onClick={()=>selectSort("Newest")}
+                  onClick={() => selectSort('Newest')}
                 >
                   Newest
                 </button>
+
               </div>
             )
           }
+
         </div>
+
       </div>
+
       <div className="nav-icons">
+
         <Link
           to="/wishlist"
           className="icon-btn"
         >
           <FiHeart />
+
           {
-            wishlist.length>0 &&
+            wishlist.length > 0 &&
             <span className="badge">
               {wishlist.length}
             </span>
           }
+
         </Link>
+
         <Link
           to="/cart"
           className="icon-btn"
         >
           <FiShoppingBag />
+
           {
-            cartCount>0 &&
+            cartCount > 0 &&
             <span className="badge">
               {cartCount}
             </span>
           }
+
         </Link>
+
         {
           user ? (
+
             <div className="account-wrapper">
+
               <button
                 className="account-btn"
-                onClick={()=>
+                onClick={() =>
                   setAccountOpen(!accountOpen)
                 }
               >
                 <FiUser />
                 <span>Account</span>
               </button>
+
               {
-                accountOpen &&
-                <div className="account-dropdown">
-                  <button
-                    onClick={()=>{
-                      setAccountOpen(false)
-                      navigate('/orders')
-                    }}
-                  >
-                    My Orders
-                  </button>
-                  <button
-                    onClick={handleLogout}
-                  >
-                    Logout
-                  </button>
-                </div>
+                accountOpen && (
+
+                  <div className="account-dropdown">
+
+                    <button
+                      onClick={() => {
+                        setAccountOpen(false)
+                        navigate('/profile')
+                      }}
+                    >
+                      My Profile
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        setAccountOpen(false)
+                        navigate('/orders')
+                      }}
+                    >
+                      My Orders
+                    </button>
+
+                    <button
+                      onClick={handleLogout}
+                    >
+                      Logout
+                    </button>
+
+                  </div>
+
+                )
               }
+
             </div>
+
           ) : (
+
             <button
               className="login-btn"
-              onClick={()=>navigate('/login')}
+              onClick={() => navigate('/login')}
             >
               Login
             </button>
+
           )
         }
+
       </div>
+
     </nav>
   )
 }
+
 export default Navbar
