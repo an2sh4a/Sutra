@@ -16,6 +16,7 @@ import Signup from './pages/Signup'
 import MyOrders from './pages/MyOrders'
 import OrderDetails from './pages/OrderDetails'
 import ResetPassword from './pages/ResetPassword'
+import Profile from './pages/Profile'
 
 function App() {
 
@@ -81,6 +82,11 @@ function App() {
             <Route
               path="/orders"
               element={<MyOrders />}
+            />
+
+            <Route
+              path="/profile"
+              element={<Profile />}
             />
 
             <Route
