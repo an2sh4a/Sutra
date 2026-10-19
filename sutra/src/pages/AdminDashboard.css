@@ -106,3 +106,42 @@
 @media (prefers-reduced-motion: reduce) {
   .admin-button { transition: none; }
 }
+
+.admin-product-filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.admin-product-filter select {
+  padding: 9px 12px;
+  border: 1px solid #ddd5ca;
+  border-radius: 6px;
+  background: #fff;
+  color: #29251f;
+}
+
+.admin-product-status {
+  display: inline-block;
+  width: fit-content;
+  margin-top: 8px;
+  padding: 4px 9px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.admin-product-status.is-active {
+  background: #e7f3e8;
+  color: #28643b;
+}
+
+.admin-product-status.is-archived {
+  background: #f5e9df;
+  color: #8b4b28;
+}
+
+.admin-product-card.is-archived {
+  opacity: 0.78;
+}

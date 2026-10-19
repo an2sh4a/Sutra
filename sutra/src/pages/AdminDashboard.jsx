@@ -12,6 +12,7 @@ const EMPTY_FORM = {
   material: '',
   image: '',
   rating: '0',
+  is_active: true,
 }
 
 const CATEGORIES = [
@@ -36,8 +37,9 @@ function AdminDashboard() {
   const [selectedImage, setSelectedImage] = useState(null)
   const [message, setMessage] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
-  const [productToDelete, setProductToDelete] = useState(null)
-const [deleting, setDeleting] = useState(false)
+  const [productToToggle, setProductToToggle] = useState(null)
+  const [updatingStatus, setUpdatingStatus] = useState(false)
+  const [productFilter, setProductFilter] = useState('all')
 
   const checkAdmin = useCallback(async () => {
     setCheckingAdmin(true)
@@ -143,6 +145,7 @@ const [deleting, setDeleting] = useState(false)
       material: product.material || '',
       image: product.image || '',
       rating: product.rating ?? '0',
+      is_active: product.is_active ?? true,
     })
 
     document.getElementById('product-form')?.scrollIntoView({
@@ -299,6 +302,7 @@ const [deleting, setDeleting] = useState(false)
         material: form.material.trim() || null,
         image: imageUrl || null,
         rating: form.rating === '' ? null : Number(form.rating),
+        is_active: form.is_active ?? true,
       }
 
       let result
@@ -350,50 +354,48 @@ const [deleting, setDeleting] = useState(false)
 
   
 
-async function handleDeleteProduct() {
-  if (!productToDelete || deleting) return
+  async function handleToggleProductStatus() {
+    if (!productToToggle || updatingStatus) return
 
-  setDeleting(true)
-  setErrorMessage('')
-  setMessage('')
+    setUpdatingStatus(true)
+    setErrorMessage('')
+    setMessage('')
 
-  const product = productToDelete
+    const product = productToToggle
+    const nextIsActive = !(product.is_active ?? true)
 
-  try {
-    const { data, error } = await supabase
-      .from('products')
-      .delete()
-      .eq('id', product.id)
-      .select('id')
+    try {
+      const { data, error } = await supabase
+        .from('products')
+        .update({ is_active: nextIsActive })
+        .eq('id', product.id)
+        .select('id, is_active')
+        .single()
 
-    if (error) throw error
+      if (error) throw error
+      if (!data) throw new Error('The product status was not updated.')
 
-    if (!data || data.length === 0) {
-      throw new Error(
-        'No product was deleted. Check the admin DELETE policy.'
+      setProducts((current) =>
+        current.map((item) =>
+          item.id === product.id
+            ? { ...item, is_active: data.is_active }
+            : item
+        )
       )
+
+      setProductToToggle(null)
+      setMessage(
+        nextIsActive
+          ? `${product.name || 'Product'} restored successfully.`
+          : `${product.name || 'Product'} archived successfully.`
+      )
+    } catch (error) {
+      console.error('Product status update failed:', error)
+      setErrorMessage(`Could not update product status: ${error.message}`)
+    } finally {
+      setUpdatingStatus(false)
     }
-
-    setProducts((current) =>
-      current.filter((item) => item.id !== product.id)
-    )
-
-    if (editingId === product.id) {
-      resetForm()
-    }
-
-    setProductToDelete(null)
-    setMessage('Product deleted successfully.')
-
-    // Image cleanup is separate from deleting the product record.
-    await removeStorageImage(product.image)
-  } catch (error) {
-    console.error('Delete product failed:', error)
-    setErrorMessage(`Could not delete product: ${error.message}`)
-  } finally {
-    setDeleting(false)
   }
-}
 
 
   const totalOrders = orders.length
@@ -550,6 +552,23 @@ async function handleDeleteProduct() {
             </label>
 
             <label>
+              Product status
+              <select
+                name="is_active"
+                value={form.is_active ? 'active' : 'archived'}
+                onChange={(event) =>
+                  setForm((current) => ({
+                    ...current,
+                    is_active: event.target.value === 'active',
+                  }))
+                }
+              >
+                <option value="active">Active</option>
+                <option value="archived">Archived</option>
+              </select>
+            </label>
+
+            <label>
               Rating (0–5)
               <input
                 name="rating"
@@ -638,7 +657,22 @@ async function handleDeleteProduct() {
           <div>
             <p className="admin-eyebrow">YOUR INVENTORY</p>
             <h2>Manage Products ({products.length})</h2>
+            <p className="field-hint">
+              {products.filter((product) => product.is_active ?? true).length} active ·{' '}
+              {products.filter((product) => !(product.is_active ?? true)).length} archived
+            </p>
           </div>
+          <label className="admin-product-filter">
+            Show
+            <select
+              value={productFilter}
+              onChange={(event) => setProductFilter(event.target.value)}
+            >
+              <option value="all">All products</option>
+              <option value="active">Active only</option>
+              <option value="archived">Archived only</option>
+            </select>
+          </label>
           <button
             className="admin-button admin-button-secondary"
             type="button"
@@ -656,10 +690,27 @@ async function handleDeleteProduct() {
             <h3>No products found</h3>
             <p>Add your first jewellery product using the form above.</p>
           </div>
+        ) : products.filter((product) => {
+          const active = product.is_active ?? true
+          if (productFilter === 'active') return active
+          if (productFilter === 'archived') return !active
+          return true
+        }).length === 0 ? (
+          <div className="admin-empty-state">
+            <h3>No products in this view</h3>
+            <p>Try another filter or add a product.</p>
+          </div>
         ) : (
           <div className="admin-product-grid">
-            {products.map((product) => (
-              <article className="admin-product-card" key={product.id}>
+            {products
+              .filter((product) => {
+                const active = product.is_active ?? true
+                if (productFilter === 'active') return active
+                if (productFilter === 'archived') return !active
+                return true
+              })
+              .map((product) => (
+              <article className={`admin-product-card ${!(product.is_active ?? true) ? 'is-archived' : ''}`} key={product.id}>
                 <div className="admin-product-image">
                   {product.image ? (
                     <img src={product.image} alt={product.name || 'Product'} />
@@ -671,6 +722,9 @@ async function handleDeleteProduct() {
                 <div className="admin-product-info">
                   <span className="admin-product-category">
                     {product.category || 'Uncategorised'}
+                  </span>
+                  <span className={`admin-product-status ${(product.is_active ?? true) ? 'is-active' : 'is-archived'}`}>
+                    {(product.is_active ?? true) ? 'Active' : 'Archived'}
                   </span>
                   <h3>{product.name || 'Untitled product'}</h3>
                   <p className="admin-product-material">
@@ -698,14 +752,14 @@ async function handleDeleteProduct() {
                     </button>
                     <button
                       type="button"
-                      className="admin-button admin-button-danger"
+                      className={`admin-button ${(product.is_active ?? true) ? 'admin-button-danger' : 'admin-button-primary'}`}
                       onClick={() => {
                         setErrorMessage('')
                         setMessage('')
-                        setProductToDelete(product)
+                        setProductToToggle(product)
                       }}
                     >
-                      Delete
+                      {(product.is_active ?? true) ? 'Archive' : 'Restore'}
                     </button>
                   </div>
                 </div>
@@ -754,12 +808,12 @@ async function handleDeleteProduct() {
         )}
       </section>
 
-      {productToDelete && (
+      {productToToggle && (
         <div
           className="delete-dialog-backdrop"
           onMouseDown={(event) => {
-            if (event.target === event.currentTarget && !deleting) {
-              setProductToDelete(null)
+            if (event.target === event.currentTarget && !updatingStatus) {
+              setProductToToggle(null)
             }
           }}
         >
@@ -767,30 +821,37 @@ async function handleDeleteProduct() {
             className="delete-dialog"
             role="alertdialog"
             aria-modal="true"
-            aria-labelledby="delete-dialog-title"
-            aria-describedby="delete-dialog-description"
+            aria-labelledby="status-dialog-title"
+            aria-describedby="status-dialog-description"
           >
-            <h2 id="delete-dialog-title">Delete product?</h2>
-            <p id="delete-dialog-description">
-              Are you sure you want to delete "{productToDelete.name}"? This
-              action cannot be undone.
+            <h2 id="status-dialog-title">
+              {(productToToggle.is_active ?? true) ? 'Archive product?' : 'Restore product?'}
+            </h2>
+            <p id="status-dialog-description">
+              {(productToToggle.is_active ?? true)
+                ? `“${productToToggle.name}” will be hidden from the storefront. Existing order records will be preserved.`
+                : `“${productToToggle.name}” will become visible in the storefront again.`}
             </p>
             <div className="delete-dialog-actions">
               <button
                 type="button"
                 className="admin-button admin-button-secondary"
-                disabled={deleting}
-                onClick={() => setProductToDelete(null)}
+                disabled={updatingStatus}
+                onClick={() => setProductToToggle(null)}
               >
                 Cancel
               </button>
               <button
                 type="button"
-                className="admin-button admin-button-danger"
-                disabled={deleting}
-                onClick={handleDeleteProduct}
+                className={`admin-button ${(productToToggle.is_active ?? true) ? 'admin-button-danger' : 'admin-button-primary'}`}
+                disabled={updatingStatus}
+                onClick={handleToggleProductStatus}
               >
-                {deleting ? 'Deleting...' : 'Yes, Delete'}
+                {updatingStatus
+                  ? 'Updating...'
+                  : (productToToggle.is_active ?? true)
+                    ? 'Yes, Archive'
+                    : 'Yes, Restore'}
               </button>
             </div>
           </div>
