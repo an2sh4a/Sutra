@@ -12,12 +12,38 @@
   padding: 0 40px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 20px;
+  justify-content: center;
+  position: relative;
 }
 
 .products-heading-text {
   min-width: 0;
+  text-align: center;
+}
+
+.section-title {
+  margin: 0;
+  color: #8B5E3C;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(36px, 4vw, 52px);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.products-subtitle {
+  margin: 12px 0 0;
+  color: #81756B;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.carousel-controls {
+  position: absolute;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 9px;
 }
 
 .products-eyebrow {
@@ -27,28 +53,6 @@
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 2px;
-}
-
-.section-title {
-  margin: 0;
-  color: #8B5E3C;
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(28px, 3vw, 38px);
-  font-weight: 500;
-  line-height: 1.2;
-}
-
-.products-subtitle {
-  margin: 8px 0 0;
-  color: #81756B;
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.carousel-controls {
-  display: flex;
-  flex-shrink: 0;
-  gap: 9px;
 }
 
 .carousel-arrow {

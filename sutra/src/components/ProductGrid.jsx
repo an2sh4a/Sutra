@@ -38,17 +38,9 @@ function ProductGrid({
     >
       <div className="products-heading">
         <div className="products-heading-text">
-          <span className="products-eyebrow">
-            THE SUTRĀ COLLECTION
-          </span>
-
           <h2 className="section-title">
-            Made to Be Loved
+            THE SUTRĀ COLLECTION
           </h2>
-
-          <p className="products-subtitle">
-            Little details, thoughtfully handcrafted.
-          </p>
         </div>
 
         <div className="carousel-controls">
