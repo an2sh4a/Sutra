@@ -126,6 +126,8 @@ function Home(){
       <Hero />
       <ProductGrid
         products={filteredProducts}
+        selectedCategory={selectedCategory}
+        onCategoryChange={filterCategory}
       />
       <CustomerWords />
       <Footer />

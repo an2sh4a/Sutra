@@ -1,19 +1,250 @@
-.featured-products{
-  scroll-margin-top:110px;
+
+.featured-products {
+  scroll-margin-top: 110px;
+  padding: 48px 0 56px;
+  background: #F9F5F1;
+  overflow: hidden;
 }
 
-.product-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:40px;
-  padding:60px 80px;
-  background:#F9F5F1;
+.products-heading {
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
 }
 
-.section-title{
-  text-align:center;
-  font-size:42px;
-  color:#8B5E3C;
-  margin-top:70px;
-  margin-bottom:20px;
+.products-heading-text {
+  min-width: 0;
+}
+
+.products-eyebrow {
+  display: block;
+  margin-bottom: 8px;
+  color: #9B795E;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.section-title {
+  margin: 0;
+  color: #8B5E3C;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(28px, 3vw, 38px);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.products-subtitle {
+  margin: 8px 0 0;
+  color: #81756B;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.carousel-controls {
+  display: flex;
+  flex-shrink: 0;
+  gap: 9px;
+}
+
+.carousel-arrow {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #E4D4C7;
+  border-radius: 50%;
+  background: #FFFFFF;
+  color: #805437;
+  font-size: 22px;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.carousel-arrow:hover {
+  background: #805437;
+  border-color: #805437;
+  color: #FFFFFF;
+}
+
+.carousel-arrow:focus-visible,
+.product-category-tab:focus-visible {
+  outline: 2px solid #8B5E3C;
+  outline-offset: 3px;
+}
+
+.product-category-tabs {
+  max-width: 1480px;
+  margin: 22px auto 24px;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.product-category-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.product-category-tab {
+  flex-shrink: 0;
+  padding: 9px 17px;
+  border: 1px solid transparent;
+  border-radius: 30px;
+  background: #F0E9E2;
+  color: #6F6257;
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.product-category-tab:hover {
+  background: #E6D7C9;
+}
+
+.product-category-tab.active {
+  background: #805437;
+  color: #FFFFFF;
+}
+
+.product-carousel {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc(
+    (100% - 4 * 20px) / 5
+  );
+  gap: 20px;
+  padding: 8px 40px 24px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: #CBB5A2 transparent;
+}
+
+.product-carousel-item {
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+.products-empty {
+  margin: 24px 40px 0;
+  padding: 50px 20px;
+  border: 1px dashed #DCC9B8;
+  border-radius: 14px;
+  text-align: center;
+  color: #79685A;
+}
+
+.products-empty h3 {
+  margin: 0 0 8px;
+  color: #805437;
+}
+
+.products-empty p {
+  margin: 0;
+  font-size: 14px;
+}
+
+@media (max-width: 1200px) {
+  .product-carousel {
+    grid-auto-columns: calc(
+      (100% - 3 * 18px) / 4
+    );
+    gap: 18px;
+  }
+}
+
+@media (max-width: 900px) {
+  .featured-products {
+    padding: 36px 0 42px;
+  }
+
+  .products-heading {
+    padding: 0 24px;
+  }
+
+  .product-category-tabs {
+    padding: 0 24px;
+  }
+
+  .product-carousel {
+    grid-auto-columns: calc(
+      (100% - 2 * 16px) / 3
+    );
+    gap: 16px;
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+}
+
+@media (max-width: 600px) {
+  .featured-products {
+    padding: 30px 0 36px;
+  }
+
+  .products-heading {
+    padding: 0 16px;
+    gap: 12px;
+  }
+
+  .products-eyebrow {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+  }
+
+  .section-title {
+    font-size: 27px;
+  }
+
+  .products-subtitle {
+    font-size: 12px;
+  }
+
+  .carousel-controls {
+    gap: 6px;
+  }
+
+  .carousel-arrow {
+    width: 34px;
+    height: 34px;
+    font-size: 19px;
+  }
+
+  .product-category-tabs {
+    margin: 18px auto;
+    padding: 0 16px;
+    gap: 6px;
+  }
+
+  .product-category-tab {
+    padding: 8px 13px;
+    font-size: 12px;
+  }
+
+  .product-carousel {
+    grid-auto-columns: 68%;
+    gap: 12px;
+    padding: 6px 16px 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-carousel {
+    scroll-behavior: auto;
+  }
 }
