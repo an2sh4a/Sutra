@@ -36,6 +36,8 @@ function AdminDashboard() {
   const [selectedImage, setSelectedImage] = useState(null)
   const [message, setMessage] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
+  const [productToDelete, setProductToDelete] = useState(null)
+const [deleting, setDeleting] = useState(false)
 
   const checkAdmin = useCallback(async () => {
     setCheckingAdmin(true)
@@ -346,37 +348,53 @@ function AdminDashboard() {
     }
   }
 
-  async function handleDeleteProduct(product) {
-    const confirmed = window.confirm(
-      `Delete "${product.name}"? This action cannot be undone.`
-    )
+  
 
-    if (!confirmed) return
+async function handleDeleteProduct() {
+  if (!productToDelete || deleting) return
 
-    setMessage('')
-    setErrorMessage('')
+  setDeleting(true)
+  setErrorMessage('')
+  setMessage('')
 
-    const { error } = await supabase
+  const product = productToDelete
+
+  try {
+    const { data, error } = await supabase
       .from('products')
       .delete()
       .eq('id', product.id)
+      .select('id')
 
-    if (error) {
-      console.error('Delete product failed:', error)
-      setErrorMessage('Could not delete product: ' + error.message)
-      return
+    if (error) throw error
+
+    if (!data || data.length === 0) {
+      throw new Error(
+        'No product was deleted. Check the admin DELETE policy.'
+      )
     }
+
+    setProducts((current) =>
+      current.filter((item) => item.id !== product.id)
+    )
 
     if (editingId === product.id) {
       resetForm()
     }
 
-    await removeStorageImage(product.image)
-    setProducts((current) =>
-      current.filter((item) => item.id !== product.id)
-    )
+    setProductToDelete(null)
     setMessage('Product deleted successfully.')
+
+    // Image cleanup is separate from deleting the product record.
+    await removeStorageImage(product.image)
+  } catch (error) {
+    console.error('Delete product failed:', error)
+    setErrorMessage(`Could not delete product: ${error.message}`)
+  } finally {
+    setDeleting(false)
   }
+}
+
 
   const totalOrders = orders.length
 
@@ -681,7 +699,11 @@ function AdminDashboard() {
                     <button
                       type="button"
                       className="admin-button admin-button-danger"
-                      onClick={() => handleDeleteProduct(product)}
+                      onClick={() => {
+                        setErrorMessage('')
+                        setMessage('')
+                        setProductToDelete(product)
+                      }}
                     >
                       Delete
                     </button>
@@ -731,6 +753,49 @@ function AdminDashboard() {
           ))
         )}
       </section>
+
+      {productToDelete && (
+        <div
+          className="delete-dialog-backdrop"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget && !deleting) {
+              setProductToDelete(null)
+            }
+          }}
+        >
+          <div
+            className="delete-dialog"
+            role="alertdialog"
+            aria-modal="true"
+            aria-labelledby="delete-dialog-title"
+            aria-describedby="delete-dialog-description"
+          >
+            <h2 id="delete-dialog-title">Delete product?</h2>
+            <p id="delete-dialog-description">
+              Are you sure you want to delete "{productToDelete.name}"? This
+              action cannot be undone.
+            </p>
+            <div className="delete-dialog-actions">
+              <button
+                type="button"
+                className="admin-button admin-button-secondary"
+                disabled={deleting}
+                onClick={() => setProductToDelete(null)}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="admin-button admin-button-danger"
+                disabled={deleting}
+                onClick={handleDeleteProduct}
+              >
+                {deleting ? 'Deleting...' : 'Yes, Delete'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   )
 }
