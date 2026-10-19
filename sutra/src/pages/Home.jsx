@@ -5,7 +5,7 @@ import { SearchContext } from '../context/SearchContext'
 import Hero from '../components/Hero'
 import ProductGrid from '../components/ProductGrid'
 import Footer from '../components/Footer'
-import CategoryBar from '../components/CategoryBar'
+// import CategoryBar from '../components/CategoryBar'
 import CustomerWords from '../components/CustomerWords'
 
 function Home(){
@@ -120,9 +120,9 @@ function Home(){
   }
   return(
     <div>
-      <CategoryBar
+      {/* <CategoryBar
         filterCategory={filterCategory}
-      />
+      /> */}
       <Hero />
       <ProductGrid
         products={filteredProducts}
