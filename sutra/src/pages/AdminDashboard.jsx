@@ -468,6 +468,14 @@ function AdminDashboard() {
           <h3>Revenue</h3>
           <p>₹{revenue.toLocaleString('en-IN')}</p>
         </div>
+        <div className="card">
+          <h3>Active Products</h3>
+          <p>{products.filter((product) => product.is_active ?? true).length}</p>
+        </div>
+        <div className="card">
+          <h3>Archived Products</h3>
+          <p>{products.filter((product) => !(product.is_active ?? true)).length}</p>
+        </div>
       </section>
 
       <section className="admin-section" id="product-form">
