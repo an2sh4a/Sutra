@@ -36,34 +36,16 @@ function ProductGrid({
       id="featured-products"
       className="featured-products"
     >
+      {/* Centered section heading */}
       <div className="products-heading">
         <div className="products-heading-text">
           <h2 className="section-title">
             THE SUTRĀ COLLECTION
           </h2>
         </div>
-
-        <div className="carousel-controls">
-          <button
-            type="button"
-            className="carousel-arrow"
-            aria-label="Previous products"
-            onClick={() => scrollProducts(-1)}
-          >
-            <FiChevronLeft />
-          </button>
-
-          <button
-            type="button"
-            className="carousel-arrow"
-            aria-label="Next products"
-            onClick={() => scrollProducts(1)}
-          >
-            <FiChevronRight />
-          </button>
-        </div>
       </div>
 
+      {/* Category filters */}
       <div
         className="product-category-tabs"
         role="group"
@@ -86,29 +68,54 @@ function ProductGrid({
         ))}
       </div>
 
-      {products.length > 0 ? (
-        <div
-          className="product-carousel"
-          ref={trackRef}
-          aria-label="Products"
-        >
-          {products.map((product) => (
-            <div
-              className="product-carousel-item"
-              key={product.id}
+      {/* Product carousel and right-side arrows */}
+      <div className="product-carousel-row">
+        {products.length > 0 ? (
+          <div
+            className="product-carousel"
+            ref={trackRef}
+            aria-label="Products"
+          >
+            {products.map((product) => (
+              <div
+                className="product-carousel-item"
+                key={product.id}
+              >
+                <ProductCard product={product} />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="products-empty">
+            <h3>No products found</h3>
+            <p>
+              Try another category or adjust your search and filters.
+            </p>
+          </div>
+        )}
+
+        {products.length > 0 && (
+          <div className="carousel-controls product-carousel-controls">
+            <button
+              type="button"
+              className="carousel-arrow"
+              aria-label="Previous products"
+              onClick={() => scrollProducts(-1)}
             >
-              <ProductCard product={product} />
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="products-empty">
-          <h3>No products found</h3>
-          <p>
-            Try another category or adjust your search and filters.
-          </p>
-        </div>
-      )}
+              <FiChevronLeft />
+            </button>
+
+            <button
+              type="button"
+              className="carousel-arrow"
+              aria-label="Next products"
+              onClick={() => scrollProducts(1)}
+            >
+              <FiChevronRight />
+            </button>
+          </div>
+        )}
+      </div>
     </section>
   )
 }

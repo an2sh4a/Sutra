@@ -13,7 +13,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
 }
 
 .products-heading-text {
@@ -25,7 +24,7 @@
   margin: 0;
   color: #8B5E3C;
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(36px, 4vw, 52px);
+  font-size: clamp(36px, 4vw, 42px);
   font-weight: 500;
   line-height: 1.2;
 }
@@ -37,15 +36,6 @@
   line-height: 1.5;
 }
 
-.carousel-controls {
-  position: absolute;
-  right: 40px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  gap: 9px;
-}
-
 .products-eyebrow {
   display: block;
   margin-bottom: 8px;
@@ -55,12 +45,19 @@
   letter-spacing: 2px;
 }
 
+/* General carousel control layout */
+.carousel-controls {
+  display: flex;
+  gap: 9px;
+}
+
 .carousel-arrow {
   width: 40px;
   height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
   border: 1px solid #E4D4C7;
   border-radius: 50%;
   background: #FFFFFF;
@@ -70,7 +67,8 @@
   transition:
     background 0.2s ease,
     color 0.2s ease,
-    border-color 0.2s ease;
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .carousel-arrow:hover {
@@ -85,6 +83,7 @@
   outline-offset: 3px;
 }
 
+/* Category tabs */
 .product-category-tabs {
   max-width: 1480px;
   margin: 22px auto 24px;
@@ -124,14 +123,18 @@
   color: #FFFFFF;
 }
 
+/* Carousel and right-side arrow controls */
+.product-carousel-row {
+  position: relative;
+  width: 100%;
+}
+
 .product-carousel {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: calc(
-    (100% - 4 * 20px) / 5
-  );
+  grid-auto-columns: calc((100% - 4 * 20px) / 5);
   gap: 20px;
-  padding: 8px 40px 24px;
+  padding: 8px 88px 24px 40px;
   overflow-x: auto;
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
@@ -145,6 +148,28 @@
   scroll-snap-align: start;
 }
 
+.product-carousel-controls {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transform: translateY(-50%);
+}
+
+.product-carousel-controls .carousel-arrow {
+  background: #FFFFFF;
+  box-shadow: 0 3px 12px rgba(65, 43, 27, 0.12);
+}
+
+.product-carousel-controls .carousel-arrow:hover {
+  background: #805437;
+  color: #FFFFFF;
+}
+
+/* Empty category or search results */
 .products-empty {
   margin: 24px 40px 0;
   padding: 50px 20px;
@@ -164,15 +189,15 @@
   font-size: 14px;
 }
 
+/* Smaller desktop and laptop screens */
 @media (max-width: 1200px) {
   .product-carousel {
-    grid-auto-columns: calc(
-      (100% - 3 * 18px) / 4
-    );
+    grid-auto-columns: calc((100% - 3 * 18px) / 4);
     gap: 18px;
   }
 }
 
+/* Tablets */
 @media (max-width: 900px) {
   .featured-products {
     padding: 36px 0 42px;
@@ -187,15 +212,25 @@
   }
 
   .product-carousel {
-    grid-auto-columns: calc(
-      (100% - 2 * 16px) / 3
-    );
+    grid-auto-columns: calc((100% - 2 * 16px) / 3);
     gap: 16px;
-    padding-right: 24px;
+    padding-right: 66px;
     padding-left: 24px;
+  }
+
+  .product-carousel-controls {
+    right: 8px;
+    gap: 8px;
+  }
+
+  .product-carousel-controls .carousel-arrow {
+    width: 34px;
+    height: 34px;
+    font-size: 19px;
   }
 }
 
+/* Mobile */
 @media (max-width: 600px) {
   .featured-products {
     padding: 30px 0 36px;
@@ -203,12 +238,6 @@
 
   .products-heading {
     padding: 0 16px;
-    gap: 12px;
-  }
-
-  .products-eyebrow {
-    font-size: 9px;
-    letter-spacing: 1.5px;
   }
 
   .section-title {
@@ -219,14 +248,9 @@
     font-size: 12px;
   }
 
-  .carousel-controls {
-    gap: 6px;
-  }
-
-  .carousel-arrow {
-    width: 34px;
-    height: 34px;
-    font-size: 19px;
+  .products-eyebrow {
+    font-size: 9px;
+    letter-spacing: 1.5px;
   }
 
   .product-category-tabs {
@@ -243,7 +267,23 @@
   .product-carousel {
     grid-auto-columns: 68%;
     gap: 12px;
-    padding: 6px 16px 20px;
+    padding: 6px 48px 20px 16px;
+  }
+
+  .product-carousel-controls {
+    right: 5px;
+    gap: 6px;
+  }
+
+  .product-carousel-controls .carousel-arrow {
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+  }
+
+  .products-empty {
+    margin: 20px 16px 0;
+    padding: 36px 16px;
   }
 }
 
