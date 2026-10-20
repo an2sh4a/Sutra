@@ -260,3 +260,15 @@
 .shop-btn:hover{
   background:#754C2F;
 }
+
+/* Remove underlines from cart action links */
+.cart-layout a,
+.cart-layout a:hover,
+.cart-layout a:focus,
+.cart-layout a:active,
+.empty-cart-container a,
+.empty-cart-container a:hover,
+.empty-cart-container a:focus,
+.empty-cart-container a:active {
+  text-decoration: none !important;
+}

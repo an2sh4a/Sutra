@@ -129,7 +129,7 @@ function Home() {
         selectedCategory={selectedCategory}
         onCategoryChange={filterCategory}
       />
-      <CustomerWords />
+      {/* <CustomerWords /> */}
       <Footer />
       <FloatingPromo />
     </div>

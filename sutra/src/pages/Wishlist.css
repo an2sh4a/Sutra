@@ -335,3 +335,32 @@
     font-size:11px;
   }
 }
+
+
+/* Remove underlines from wishlist links and action buttons */
+.wishlist-container a,
+.wishlist-container a:hover,
+.wishlist-container a:focus,
+.wishlist-container a:active,
+.empty-wishlist-container a,
+.empty-wishlist-container a:hover,
+.empty-wishlist-container a:focus,
+.empty-wishlist-container a:active,
+.wishlist-buttons a,
+.wishlist-buttons a:hover,
+.wishlist-buttons a:focus,
+.wishlist-buttons a:active {
+  text-decoration: none !important;
+}
+
+/* Keep button text un-underlined in every state */
+.wishlist-container button,
+.wishlist-container button:hover,
+.wishlist-container button:focus,
+.wishlist-container button:active,
+.empty-wishlist-container button,
+.empty-wishlist-container button:hover,
+.empty-wishlist-container button:focus,
+.empty-wishlist-container button:active {
+  text-decoration: none !important;
+}
