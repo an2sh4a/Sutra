@@ -212,3 +212,43 @@
     max-width: 240px;
   }
 }
+
+
+.order-customer-details {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.order-customer-email,
+.order-id {
+  margin: 0.3rem 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.order-customer-email {
+  font-size: 0.88rem;
+}
+
+.order-id {
+  font-size: 0.8rem;
+}
+
+.order-id span {
+  overflow-wrap: anywhere;
+  word-break: break-all;
+}
+
+.order-amount {
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .order-customer-details {
+    width: 100%;
+  }
+
+  .order-id span {
+    word-break: break-all;
+  }
+}

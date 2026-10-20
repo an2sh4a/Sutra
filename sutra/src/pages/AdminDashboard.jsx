@@ -846,16 +846,23 @@ function AdminDashboard() {
         ) : (
           orders.map((order) => (
             <article className="order-card" key={order.id}>
-              <div>
+              <div className="order-customer-details">
                 <h3>{order.customer_name || 'Customer'}</h3>
                 <p>{order.phone || 'No phone number'}</p>
+                <p className="order-customer-email">
+                  {order.account_email || order.email || order.customer_email || order.user_email || 'Customer account email unavailable'}
+                </p>
+                <p className="order-id">
+                  <strong>Order ID:</strong>{' '}
+                  <span title={order.id}>{order.order_number || order.id}</span>
+                </p>
                 <span className="order-date">
                   {order.created_at
                     ? new Date(order.created_at).toLocaleDateString('en-IN')
                     : ''}
                 </span>
               </div>
-              <strong>
+              <strong className="order-amount">
                 ₹{Number(order.total_amount || 0).toLocaleString('en-IN')}
               </strong>
               <div className="order-status-controls">
