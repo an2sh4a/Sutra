@@ -607,3 +607,63 @@
 }
 
 
+
+/* =========================
+   SCROLLABLE PRODUCT LIST
+========================= */
+
+/* Keep the cart heading outside the scrolling area */
+.cart-layout .cart-left {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* Only the product cards scroll */
+.cart-layout .cart-left > .cart-card {
+  flex-shrink: 0;
+}
+
+/* Use this wrapper for the product cards */
+.cart-products-scroll {
+  max-height: calc(100vh - 240px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 2px 12px 2px 2px;
+  min-height: 0;
+  scrollbar-width: thin;
+  scrollbar-color: #C7A58A transparent;
+}
+
+.cart-products-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.cart-products-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.cart-products-scroll::-webkit-scrollbar-thumb {
+  background: #C7A58A;
+  border-radius: 10px;
+}
+
+/* Keep the summary in place while the page is displayed */
+.cart-layout .cart-right {
+  position: sticky;
+  top: 120px;
+  align-self: flex-start;
+}
+
+/* On mobile, return to normal page scrolling */
+@media (max-width: 700px) {
+  .cart-products-scroll {
+    max-height: none;
+    overflow: visible;
+    padding: 0;
+  }
+
+  .cart-layout .cart-right {
+    position: static;
+  }
+}

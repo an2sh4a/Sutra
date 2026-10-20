@@ -59,81 +59,82 @@ function Cart() {
       <div className="cart-left">
         <h1>My Cart</h1>
 
-        {cart.map((item) => {
-          const discount = item.original_price
-            ? Math.round(
-                ((item.original_price - item.price) /
-                  item.original_price) * 100
-              )
-            : 0
+        <div className="cart-products-scroll">
+          {cart.map((item) => {
+            const discount = item.original_price
+              ? Math.round(
+                  ((item.original_price - item.price) /
+                    item.original_price) * 100
+                )
+              : 0
 
-          return (
-            <div className="cart-card" key={item.id}>
-              <img
-                className="cart-product-image"
-                src={item.image}
-                alt={item.name}
-              />
+            return (
+              <div className="cart-card" key={item.id}>
+                <img
+                  className="cart-product-image"
+                  src={item.image}
+                  alt={item.name}
+                />
 
-              <div className="cart-info">
-                <div className="cart-details">
-                  <h2>{item.name}</h2>
+                <div className="cart-info">
+                  <div className="cart-details">
+                    <h2>{item.name}</h2>
 
-                  {item.description && (
-                    <p className="description">
-                      {item.description}
-                    </p>
-                  )}
+                    {item.description && (
+                      <p className="description">
+                        {item.description}
+                      </p>
+                    )}
 
-                  <div className="quantity-box">
-                    <button
-                      type="button"
-                      onClick={() => decreaseQuantity(item.id)}
-                      aria-label={`Decrease quantity of ${item.name}`}
-                    >
-                      −
-                    </button>
+                    <div className="quantity-box">
+                      <button
+                        type="button"
+                        onClick={() => decreaseQuantity(item.id)}
+                        aria-label={`Decrease quantity of ${item.name}`}
+                      >
+                        −
+                      </button>
 
-                    <span>{item.quantity}</span>
+                      <span>{item.quantity}</span>
 
-                    <button
-                      type="button"
-                      onClick={() => increaseQuantity(item.id)}
-                      aria-label={`Increase quantity of ${item.name}`}
-                    >
-                      +
-                    </button>
+                      <button
+                        type="button"
+                        onClick={() => increaseQuantity(item.id)}
+                        aria-label={`Increase quantity of ${item.name}`}
+                      >
+                        +
+                      </button>
+                    </div>
                   </div>
 
-                </div>
+                  <div className="cart-actions">
+                    <div className="price-box">
+                      <span className="old-price">
+                        ₹{item.original_price}
+                      </span>
 
-                <div className="cart-actions">
-                  <div className="price-box">
-                    <span className="old-price">
-                      ₹{item.original_price}
-                    </span>
+                      <span className="new-price">
+                        ₹{item.price}
+                      </span>
 
-                    <span className="new-price">
-                      ₹{item.price}
-                    </span>
+                      <span className="discount">
+                        {discount}% OFF
+                      </span>
+                    </div>
 
-                    <span className="discount">
-                      {discount}% OFF
-                    </span>
+                    <button
+                      type="button"
+                      className="remove-btn"
+                      onClick={() => removeItem(item.id)}
+                    >
+                      Remove
+                    </button>
                   </div>
-
-                  <button
-                    type="button"
-                    className="remove-btn"
-                    onClick={() => removeItem(item.id)}
-                  >
-                    Remove
-                  </button>
                 </div>
               </div>
-            </div>
-          )
-        })}
+            )
+          })}
+        </div>
       </div>
 
       <div className="cart-right">
