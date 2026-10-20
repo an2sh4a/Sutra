@@ -8,6 +8,7 @@ import ProductGrid from '../components/ProductGrid'
 import Footer from '../components/Footer'
 // import CategoryBar from '../components/CategoryBar'
 import CustomerWords from '../components/CustomerWords'
+import FloatingPromo from '../components/FloatingPromo'
 
 function Home() {
   const {
@@ -120,7 +121,7 @@ function Home() {
   }
 
   return (
-    <div>
+    <div className="home-page">
       {/* <CategoryBar filterCategory={filterCategory} /> */}
       <Hero />
       <ProductGrid
@@ -130,6 +131,7 @@ function Home() {
       />
       <CustomerWords />
       <Footer />
+      <FloatingPromo />
     </div>
   )
 }
