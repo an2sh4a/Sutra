@@ -11,6 +11,7 @@ const EMPTY_FORM = {
   description: '',
   material: '',
   image: '',
+  images: [],
   rating: '0',
   is_active: true,
 }
@@ -34,7 +35,7 @@ function AdminDashboard() {
   const [uploading, setUploading] = useState(false)
   const [form, setForm] = useState(EMPTY_FORM)
   const [editingId, setEditingId] = useState(null)
-  const [selectedImage, setSelectedImage] = useState(null)
+  const [selectedImages, setSelectedImages] = useState([])
   const [message, setMessage] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
   const [productToToggle, setProductToToggle] = useState(null)
@@ -132,7 +133,7 @@ function AdminDashboard() {
 
   function startEditing(product) {
     setEditingId(product.id)
-    setSelectedImage(null)
+    setSelectedImages([])
     setMessage('')
     setErrorMessage('')
 
@@ -144,6 +145,7 @@ function AdminDashboard() {
       description: product.description || '',
       material: product.material || '',
       image: product.image || '',
+      images: Array.isArray(product.images) && product.images.length ? product.images : (product.image ? [product.image] : []),
       rating: product.rating ?? '0',
       is_active: product.is_active ?? true,
     })
@@ -157,7 +159,7 @@ function AdminDashboard() {
   function resetForm() {
     setForm(EMPTY_FORM)
     setEditingId(null)
-    setSelectedImage(null)
+    setSelectedImages([])
     setMessage('')
     setErrorMessage('')
 
@@ -280,15 +282,21 @@ function AdminDashboard() {
 
     setSaving(true)
 
-    let uploadedImageUrl = null
+    let uploadedImageUrls = []
 
     try {
-      let imageUrl = form.image.trim()
-
-      if (selectedImage) {
-        imageUrl = await uploadProductImage(selectedImage)
-        uploadedImageUrl = imageUrl
+      const newlyUploadedUrls = []
+      for (const file of selectedImages) {
+        const uploadedUrl = await uploadProductImage(file)
+        newlyUploadedUrls.push(uploadedUrl)
+        uploadedImageUrls.push(uploadedUrl)
       }
+
+      // Preserve existing gallery images and append newly uploaded images.
+      const existingImages = (form.images || []).filter(Boolean)
+      const galleryImages = [...existingImages, ...newlyUploadedUrls]
+      const uniqueGalleryImages = [...new Set(galleryImages)]
+      const imageUrl = uniqueGalleryImages[0] || form.image.trim() || null
 
       const productData = {
         name: form.name.trim(),
@@ -300,7 +308,8 @@ function AdminDashboard() {
         category: form.category,
         description: form.description.trim() || null,
         material: form.material.trim() || null,
-        image: imageUrl || null,
+        image: imageUrl,
+        images: uniqueGalleryImages,
         rating: form.rating === '' ? null : Number(form.rating),
         is_active: form.is_active ?? true,
       }
@@ -324,26 +333,14 @@ function AdminDashboard() {
 
       if (result.error) throw result.error
 
-      const previousProduct = editingId
-        ? products.find((product) => product.id === editingId)
-        : null
-
-      if (
-        selectedImage &&
-        previousProduct?.image &&
-        previousProduct.image !== imageUrl
-      ) {
-        await removeStorageImage(previousProduct.image)
-      }
-
       setMessage(editingId ? 'Product updated successfully.' : 'Product added successfully.')
       resetForm()
       await fetchProducts()
     } catch (error) {
       console.error('Save product failed:', error)
 
-      if (uploadedImageUrl) {
-        await removeStorageImage(uploadedImageUrl)
+      for (const uploadedUrl of uploadedImageUrls) {
+        await removeStorageImage(uploadedUrl)
       }
 
       setErrorMessage(error.message || 'Could not save product.')
@@ -600,38 +597,53 @@ function AdminDashboard() {
               />
             </label>
 
-            <label className="product-form-full">
-              Product image
+            <div className="product-form-full admin-gallery-field">
+              <label htmlFor="product-image-file">Product images</label>
               <input
                 id="product-image-file"
                 type="file"
                 accept="image/jpeg,image/png,image/webp,image/gif"
+                multiple
                 onChange={(event) =>
-                  setSelectedImage(event.target.files?.[0] || null)
+                  setSelectedImages(Array.from(event.target.files || []))
                 }
               />
               <span className="field-hint">
-                Optional. JPG, PNG, WEBP or GIF, up to 5 MB.
-                {editingId && ' Leave empty to keep the existing image.'}
+                Select multiple images at once. JPG, PNG, WEBP or GIF, up to 5 MB per image.
+                {editingId && ' Existing images are kept; new images are added to the gallery.'}
+                {!editingId && ' The first image will be the main product image.'}
               </span>
-            </label>
 
-            {form.image && !selectedImage && (
-              <div className="product-image-preview product-form-full">
-                <span>Current image</span>
-                <img src={form.image} alt="Current product" />
-              </div>
-            )}
+              {(form.images || []).length > 0 && (
+                <div className="admin-gallery-preview">
+                  <p className="admin-gallery-title">Current product gallery</p>
+                  <div className="admin-gallery-thumbnails">
+                    {form.images.map((imageUrl, index) => (
+                      <div className="admin-gallery-thumbnail" key={`${imageUrl}-${index}`}>
+                        <img src={imageUrl} alt={`Product image ${index + 1}`} />
+                        {index === 0 && <span>Main image</span>}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
-            {selectedImage && (
-              <div className="product-image-preview product-form-full">
-                <span>Selected image: {selectedImage.name}</span>
-                <img
-                  src={URL.createObjectURL(selectedImage)}
-                  alt="Selected product preview"
-                />
-              </div>
-            )}
+              {selectedImages.length > 0 && (
+                <div className="admin-gallery-preview">
+                  <p className="admin-gallery-title">
+                    New images selected ({selectedImages.length})
+                  </p>
+                  <div className="admin-gallery-thumbnails">
+                    {selectedImages.map((file, index) => (
+                      <div className="admin-gallery-thumbnail" key={`${file.name}-${file.lastModified}-${index}`}>
+                        <img src={URL.createObjectURL(file)} alt={`Selected product image ${index + 1}`} />
+                        <span>{file.name}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="product-form-actions">

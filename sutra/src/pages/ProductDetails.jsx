@@ -11,24 +11,53 @@ function ProductDetails() {
 
   const [product, setProduct] = useState(null)
   const [quantity, setQuantity] = useState(1)
+  const [activeImageIndex, setActiveImageIndex] = useState(0)
 
   useEffect(() => {
+    let cancelled = false
+
+    async function fetchProduct() {
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('id', id)
+        .single()
+
+      if (cancelled) return
+
+      if (data) {
+        setProduct(data)
+        setActiveImageIndex(0)
+      } else {
+        console.log(error)
+      }
+    }
+
     fetchProduct()
+
+    return () => {
+      cancelled = true
+    }
   }, [id])
 
-  async function fetchProduct() {
-    const { data, error } = await supabase
-      .from('products')
-      .select('*')
-      .eq('id', id)
-      .single()
+  const galleryImages = (() => {
+    if (!product) return []
 
-    if (data) {
-      setProduct(data)
-    } else {
-      console.log(error)
-    }
-  }
+    const images = Array.isArray(product.images)
+      ? product.images.filter(
+          (image) => typeof image === 'string' && image.trim() !== ''
+        )
+      : []
+
+    // Keep compatibility with products that only have the original image field.
+    const allImages = images.length > 0
+      ? images
+      : product.image
+        ? [product.image]
+        : []
+
+    return [...new Set(allImages)]
+  })()
 
   if (!product) {
     return (
@@ -38,26 +67,42 @@ function ProductDetails() {
     )
   }
 
-  const discount = Math.round(
-    ((product.original_price - product.price) /
-      product.original_price) *
-      100
-  )
+  const discount = product.original_price > 0
+    ? Math.round(
+        ((product.original_price - product.price) /
+          product.original_price) *
+          100
+      )
+    : 0
 
-  function handleAddToCart() {
-    addToCart(product,quantity)
+  const activeImage = galleryImages[activeImageIndex] || product.image
+
+  function showPreviousImage() {
+    if (galleryImages.length < 2) return
+    setActiveImageIndex((current) => Math.max(0, current - 1))
   }
 
-  function handleBuyNow(){
-  navigate('/checkout',{
-    state:{
-      buyNowItem:{
-        ...product,
-        quantity
+  function showNextImage() {
+    if (galleryImages.length < 2) return
+    setActiveImageIndex((current) =>
+      Math.min(galleryImages.length - 1, current + 1)
+    )
+  }
+
+  function handleAddToCart() {
+    addToCart(product, quantity)
+  }
+
+  function handleBuyNow() {
+    navigate('/checkout', {
+      state: {
+        buyNowItem: {
+          ...product,
+          quantity
+        }
       }
-    }
-  })
-}
+    })
+  }
 
   return (
     <div className="product-page">
@@ -68,9 +113,37 @@ function ProductDetails() {
 
           <div className="image-card">
             <img
-              src={product.image}
-              alt={product.name}
+              src={activeImage}
+              alt={`${product.name} - image ${activeImageIndex + 1}`}
             />
+
+            {galleryImages.length > 1 && (
+              <>
+                <button
+                  type="button"
+                  className="product-image-arrow product-image-arrow-left"
+                  onClick={showPreviousImage}
+                  disabled={activeImageIndex === 0}
+                  aria-label="View previous image"
+                >
+                  ‹
+                </button>
+
+                <button
+                  type="button"
+                  className="product-image-arrow product-image-arrow-right"
+                  onClick={showNextImage}
+                  disabled={activeImageIndex === galleryImages.length - 1}
+                  aria-label="View next image"
+                >
+                  ›
+                </button>
+
+                <span className="product-image-counter">
+                  {activeImageIndex + 1} / {galleryImages.length}
+                </span>
+              </>
+            )}
           </div>
 
         </div>
@@ -200,8 +273,6 @@ function ProductDetails() {
 
           </div>
 
-          
-
           {/* <div className="highlights-card">
 
             <h2>Why You'll Love It</h2>
@@ -256,18 +327,15 @@ function ProductDetails() {
                 </div>
               </div>
 
-            </div> */}
-
-          {/* </div> */}
+            </div>
+          </div> */}
 
         </div>
 
       </div>
 
     </div>
-
   )
-
 }
 
 export default ProductDetails
