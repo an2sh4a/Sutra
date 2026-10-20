@@ -83,22 +83,6 @@ function ProductDetails() {
 
           <h1>{product.name}</h1>
 
-          <div className="rating-row">
-
-            <div className="stars">
-              ★★★★☆
-            </div>
-
-            <span>
-              4.8
-            </span>
-
-            <span className="review-count">
-              (148 Reviews)
-            </span>
-
-          </div>
-
           <div className="price-row">
 
             <span className="new-price">
@@ -122,7 +106,6 @@ function ProductDetails() {
           <div className="info-table">
 
             <div className="info-item">
-              <span className="label">Material</span>
               <span>{product.material}</span>
             </div>
 
@@ -217,17 +200,9 @@ function ProductDetails() {
 
           </div>
 
-                    <div className="description-card">
+          
 
-            <h2>Product Description</h2>
-
-            <p>
-              {product.description}
-            </p>
-
-          </div>
-
-          <div className="highlights-card">
+          {/* <div className="highlights-card">
 
             <h2>Why You'll Love It</h2>
 
@@ -281,9 +256,9 @@ function ProductDetails() {
                 </div>
               </div>
 
-            </div>
+            </div> */}
 
-          </div>
+          {/* </div> */}
 
         </div>
 
