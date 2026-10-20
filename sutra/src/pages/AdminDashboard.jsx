@@ -133,6 +133,7 @@ function AdminDashboard() {
     'Shipped',
     'Delivered',
     'Cancelled',
+    'Returned',
   ]
 
   const fetchProducts = useCallback(async () => {
@@ -447,10 +448,19 @@ function AdminDashboard() {
     (order) => order.status?.toLowerCase() === 'delivered'
   ).length
 
-  const revenue = orders.reduce(
-    (sum, order) => sum + Number(order.total_amount || 0),
-    0
-  )
+  const inProgressOrders = orders.filter((order) =>
+    ['confirmed', 'processing', 'shipped'].includes(order.status?.toLowerCase())
+  ).length
+
+  const returnedOrders = orders.filter(
+    (order) => order.status?.toLowerCase() === 'returned'
+  ).length
+
+  // Returned orders are treated as fully refunded and excluded from revenue.
+  const revenue = orders.reduce((sum, order) => {
+    if (order.status?.toLowerCase() === 'returned') return sum
+    return sum + Number(order.total_amount || 0)
+  }, 0)
 
   if (checkingAdmin) {
     return (
@@ -500,8 +510,16 @@ function AdminDashboard() {
           <p>{pendingOrders}</p>
         </div>
         <div className="card">
+          <h3>In Progress</h3>
+          <p>{inProgressOrders}</p>
+        </div>
+        <div className="card">
           <h3>Delivered</h3>
           <p>{deliveredOrders}</p>
+        </div>
+        <div className="card">
+          <h3>Returned</h3>
+          <p>{returnedOrders}</p>
         </div>
         <div className="card">
           <h3>Revenue</h3>
@@ -850,7 +868,7 @@ function AdminDashboard() {
                 <h3>{order.customer_name || 'Customer'}</h3>
                 <p>{order.phone || 'No phone number'}</p>
                 <p className="order-customer-email">
-                  {order.account_email || order.email || order.customer_email || order.user_email || 'Customer account email unavailable'}
+                  {order.email || order.customer_email || order.user_email || 'Customer account email unavailable'}
                 </p>
                 <p className="order-id">
                   <strong>Order ID:</strong>{' '}

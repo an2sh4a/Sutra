@@ -252,3 +252,8 @@
     word-break: break-all;
   }
 }
+
+.order-status.returned { background: #fff0ed; color: #a33e32; }
+.order-status.confirmed,
+.order-status.processing { background: #edf3ff; color: #315c9b; }
+.order-status.shipped { background: #f0eaff; color: #6c4aa1; }
