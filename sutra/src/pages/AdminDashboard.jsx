@@ -1,4 +1,3 @@
-
 import { useCallback, useEffect, useState } from 'react'
 import { supabase } from '../services/supabaseClient'
 import './AdminDashboard.css'
@@ -40,6 +39,7 @@ function AdminDashboard() {
   const [errorMessage, setErrorMessage] = useState('')
   const [productToToggle, setProductToToggle] = useState(null)
   const [updatingStatus, setUpdatingStatus] = useState(false)
+  const [updatingOrderId, setUpdatingOrderId] = useState(null)
   const [productFilter, setProductFilter] = useState('all')
 
   const checkAdmin = useCallback(async () => {
@@ -92,6 +92,48 @@ function AdminDashboard() {
 
     setOrders(data || [])
   }, [])
+
+  async function handleOrderStatusChange(orderId, nextStatus) {
+    const currentOrder = orders.find((order) => order.id === orderId)
+    if (!currentOrder || currentOrder.status === nextStatus || updatingOrderId) return
+
+    setUpdatingOrderId(orderId)
+    setErrorMessage('')
+    setMessage('')
+
+    try {
+      const { data, error } = await supabase
+        .from('orders')
+        .update({ status: nextStatus })
+        .eq('id', orderId)
+        .select('*')
+        .single()
+
+      if (error) throw error
+      if (!data) throw new Error('The order status was not updated.')
+
+      setOrders((current) =>
+        current.map((order) => (order.id === orderId ? { ...order, ...data } : order))
+      )
+      setMessage(`Order status updated to ${nextStatus}.`)
+    } catch (error) {
+      console.error('Order status update failed:', error)
+      setErrorMessage(
+        `Could not update order status. ${error.message || 'Please try again.'}`
+      )
+    } finally {
+      setUpdatingOrderId(null)
+    }
+  }
+
+  const ORDER_STATUSES = [
+    'Pending',
+    'Confirmed',
+    'Processing',
+    'Shipped',
+    'Delivered',
+    'Cancelled',
+  ]
 
   const fetchProducts = useCallback(async () => {
     setLoadingProducts(true)
@@ -816,13 +858,38 @@ function AdminDashboard() {
               <strong>
                 ₹{Number(order.total_amount || 0).toLocaleString('en-IN')}
               </strong>
-              <span
-                className={`order-status ${
-                  order.status?.toLowerCase() || 'unknown'
-                }`}
-              >
-                {order.status || 'Unknown'}
-              </span>
+              <div className="order-status-controls">
+                <span
+                  className={`order-status ${
+                    order.status?.toLowerCase() || 'unknown'
+                  }`}
+                >
+                  {order.status || 'Unknown'}
+                </span>
+                <label className="order-status-editor">
+                  <span>Update status</span>
+                  <select
+                    value={order.status || 'Pending'}
+                    onChange={(event) =>
+                      handleOrderStatusChange(order.id, event.target.value)
+                    }
+                    disabled={updatingOrderId !== null}
+                    aria-label={`Update status for order ${order.id}`}
+                  >
+                    {!ORDER_STATUSES.includes(order.status) && order.status && (
+                      <option value={order.status}>{order.status}</option>
+                    )}
+                    {ORDER_STATUSES.map((status) => (
+                      <option key={status} value={status}>
+                        {status}
+                      </option>
+                    ))}
+                  </select>
+                  {updatingOrderId === order.id && (
+                    <small role="status">Saving status...</small>
+                  )}
+                </label>
+              </div>
             </article>
           ))
         )}
