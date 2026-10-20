@@ -1,3 +1,4 @@
+
 import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { FiShoppingBag } from 'react-icons/fi'
@@ -5,7 +6,6 @@ import { CartContext } from '../context/CartContext'
 import './Cart.css'
 
 function Cart() {
-
   const {
     cart,
     increaseQuantity,
@@ -31,237 +31,164 @@ function Cart() {
   const saved = originalTotal - total
 
   if (cart.length === 0) {
-
     return (
-
       <div className="empty-cart-container">
-
         <div className="empty-cart-box">
-
           <div className="empty-icon">
-
             <FiShoppingBag />
-
           </div>
 
           <h1>Your Sutrā Bag is Empty</h1>
 
           <p>
-
             Looks like you haven't added any handcrafted jewellery yet.
-
           </p>
 
-          <Link to="/">
-
+          <Link to="/" className="cart-shop-link">
             <button className="shop-btn">
-
               Explore Collection
-
             </button>
-
           </Link>
-
         </div>
-
       </div>
-
     )
-
   }
 
   return (
-
     <div className="cart-layout">
-
       <div className="cart-left">
-
         <h1>My Cart</h1>
 
-        {
+        {cart.map((item) => {
+          const discount = item.original_price
+            ? Math.round(
+                ((item.original_price - item.price) /
+                  item.original_price) * 100
+              )
+            : 0
 
-          cart.map((item) => {
+          return (
+            <div className="cart-card" key={item.id}>
+              <img
+                className="cart-product-image"
+                src={item.image}
+                alt={item.name}
+              />
 
-            const discount = Math.round(
-              ((item.original_price - item.price) /
-              item.original_price) * 100
-            )
-
-            return (
-
-              <div className="cart-card" key={item.id}>
-
-                <img
-                  src={item.image}
-                  alt={item.name}
-                />
-
-                <div className="cart-info">
-
+              <div className="cart-info">
+                <div className="cart-details">
                   <h2>{item.name}</h2>
 
-                  <p className="description">
-
-                    {item.description}
-
-                  </p>
-
-                  <div className="price-box">
-
-                    <span className="old-price">
-
-                      ₹{item.original_price}
-
-                    </span>
-
-                    <span className="new-price">
-
-                      ₹{item.price}
-
-                    </span>
-
-                    <span className="discount">
-
-                      {discount}% OFF
-
-                    </span>
-
-                  </div>
-
-                  <p className="item-total">
-
-                    Item Total : ₹{item.price * item.quantity}
-
-                  </p>
+                  {item.description && (
+                    <p className="description">
+                      {item.description}
+                    </p>
+                  )}
 
                   <div className="quantity-box">
-
-                    <button onClick={() => decreaseQuantity(item.id)}>-</button>
+                    <button
+                      type="button"
+                      onClick={() => decreaseQuantity(item.id)}
+                      aria-label={`Decrease quantity of ${item.name}`}
+                    >
+                      −
+                    </button>
 
                     <span>{item.quantity}</span>
 
-                    <button onClick={() => increaseQuantity(item.id)}>+</button>
-
+                    <button
+                      type="button"
+                      onClick={() => increaseQuantity(item.id)}
+                      aria-label={`Increase quantity of ${item.name}`}
+                    >
+                      +
+                    </button>
                   </div>
-
-                  <button
-                    className="remove-btn"
-                    onClick={() => removeItem(item.id)}
-                  >
-
-                    Remove
-
-                  </button>
-
-                  <p className="delivery">
-
-                    🚚 Free Delivery
-
-                  </p>
-
-                  <p className="delivery-date">
-
-                    Delivery by 28 June
-
-                  </p>
 
                 </div>
 
+                <div className="cart-actions">
+                  <div className="price-box">
+                    <span className="old-price">
+                      ₹{item.original_price}
+                    </span>
+
+                    <span className="new-price">
+                      ₹{item.price}
+                    </span>
+
+                    <span className="discount">
+                      {discount}% OFF
+                    </span>
+                  </div>
+
+                  <button
+                    type="button"
+                    className="remove-btn"
+                    onClick={() => removeItem(item.id)}
+                  >
+                    Remove
+                  </button>
+                </div>
               </div>
-
-            )
-
-          })
-
-        }
-
+            </div>
+          )
+        })}
       </div>
 
       <div className="cart-right">
-
         <div className="summary">
-
           <h2>Order Summary</h2>
 
           <div className="bill-row big-row">
-
             <span>Items ({totalItems})</span>
-
             <span>₹{originalTotal}</span>
-
           </div>
 
-          {
+          {cart.map((item) => (
+            <div className="summary-item" key={item.id}>
+              <span>
+                {item.name} × {item.quantity}
+              </span>
 
-            cart.map(item => (
-
-              <div
-                className="summary-item"
-                key={item.id}
-              >
-
-                <span>{item.name} × {item.quantity}</span>
-
-                <span>₹{item.original_price * item.quantity}</span>
-
-              </div>
-
-            ))
-
-          }
+              <span>
+                ₹{item.original_price * item.quantity}
+              </span>
+            </div>
+          ))}
 
           <hr />
 
           <div className="bill-row">
-
             <span>Discount</span>
-
             <span className="saved">- ₹{saved}</span>
-
           </div>
 
           <div className="bill-row">
-
             <span>Shipping</span>
-
             <span className="free">FREE</span>
-
           </div>
 
           <hr />
 
           <div className="grand-total">
-
             <span>Grand Total</span>
-
             <span>₹{total}</span>
-
           </div>
 
           <p className="saved-message">
-
             You Saved ₹{saved} 🎉
-
           </p>
 
-          <Link to="/checkout">
-
+          <Link to="/checkout" className="cart-checkout-link">
             <button className="checkout-btn">
-
               Proceed To Checkout
-
             </button>
-
           </Link>
-
         </div>
-
       </div>
-
     </div>
-
   )
-
 }
 
 export default Cart
